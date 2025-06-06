@@ -1,7 +1,6 @@
-import { FaGithub, FaDiscord } from 'react-icons/fa';
+import { FaGithub, FaDiscord, FaTrophy, FaLink, FaJava } from 'react-icons/fa';
 // import { SiTistory, SiCsharp, SiJavascript, SiPython, SiJava, SiAndroid, SiC, SiCplusplus, SiGo, SiUnity } from 'react-icons/si';
 import { SiTistory, SiCsharp, SiJavascript, SiPython, SiAndroid, SiC, SiCplusplus, SiGo, SiUnity } from 'react-icons/si';
-import { FaJava } from 'react-icons/fa';
 import { SocialLink, Interest, TechStack } from '../types';
 
 
@@ -20,7 +19,7 @@ export const socialLinks: SocialLink[] = [
   {
     platform: 'solved.ac',
     url: 'https://solved.ac/profile/airhood2009',
-    emoji: '🏆'  // 이모지는 emoji 필드로 분리
+    icon: FaTrophy
   },
   {
     platform: 'Tistory',
@@ -30,7 +29,7 @@ export const socialLinks: SocialLink[] = [
   {
     platform: 'litt.ly',
     url: 'https://litt.ly/airhood',
-    emoji: '🔗'
+    icon: FaLink
   }
 ];
 
