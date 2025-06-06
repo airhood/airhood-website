@@ -8,7 +8,7 @@ const AboutMe: React.FC = () => {
       <ul className="space-y-3">
         <li className="flex items-start gap-2">
           <GradientDot />
-          <span className="text-neutral-700 dark:text-neutral-300">프로그래밍을 시작한지 4<strong>년</strong></span>
+          <span className="text-neutral-700 dark:text-neutral-300">프로그래밍을 시작한지 4년</span>
         </li>
         <li className="flex items-start gap-2">
           <GradientDot />
