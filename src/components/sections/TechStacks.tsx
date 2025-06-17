@@ -1,5 +1,6 @@
 import React from 'react';
 import { TechStack } from '../../types';
+import Section from '../common/Section.tsx';
 
 interface Props {
   techStacks: TechStack[];
@@ -7,8 +8,7 @@ interface Props {
 
 const TechStacks: React.FC<Props> = ({ techStacks }) => {
   return (
-    <section className="py-10">
-      <h2 className="text-2xl font-semibold mb-6">Tech Stacks</h2>
+    <Section title="Tech Stacks">
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
         {techStacks.map((stack, idx) => {
           const Icon = stack.icon;
@@ -20,7 +20,7 @@ const TechStacks: React.FC<Props> = ({ techStacks }) => {
           );
         })}
       </div>
-    </section>
+    </Section>
   );
 };
 

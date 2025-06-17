@@ -13,7 +13,12 @@ const Interests: React.FC<InterestsProps> = ({ interests }) => {
         {interests.map((interest, index) => (
           <div 
             key={index} 
-            className="bg-neutral-100 dark:bg-neutral-800 rounded-lg p-4 text-center hover:bg-primary-100 dark:hover:bg-primary-900 hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+            className="
+              bg-neutral-100 dark:bg-neutral-800 rounded-lg p-4 text-center 
+              hover:bg-neutral-200 dark:hover:bg-neutral-700 
+              hover:text-neutral-900 dark:hover:text-neutral-100 
+              transition-colors
+            "
           >
             {interest.name}
           </div>
