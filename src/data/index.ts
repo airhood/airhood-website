@@ -1,6 +1,6 @@
 import { FaGithub, FaDiscord, FaTrophy, FaLink, FaJava } from 'react-icons/fa';
 // import { SiTistory, SiCsharp, SiJavascript, SiPython, SiJava, SiAndroid, SiC, SiCplusplus, SiGo, SiUnity } from 'react-icons/si';
-import { SiTistory, SiCsharp, SiJavascript, SiPython, SiAndroid, SiC, SiCplusplus, SiGo, SiUnity } from 'react-icons/si';
+import { SiTistory, SiCsharp, SiJavascript, SiPython, SiAndroid, SiC, SiCplusplus, SiGo, SiUnity, SiDart, SiFlutter } from 'react-icons/si';
 import { SocialLink, Interest, TechStack } from '../types';
 
 
@@ -79,5 +79,13 @@ export const techStacks: TechStack[] = [
   {
     name: 'Unity',
     icon: SiUnity
-  }
+  },
+  {
+    name: 'Dart',
+    icon: SiDart,
+  },
+  {
+    name: 'Flutter',
+    icon: SiFlutter,
+  },
 ];
