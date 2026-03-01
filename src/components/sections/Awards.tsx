@@ -42,7 +42,6 @@ const AwardItem: React.FC<{ award: Award }> = ({ award }) => (
 const Awards: React.FC<Props> = ({ awards }) => {
   const [expanded, setExpanded] = useState(false);
   const hasMore = awards.length > INITIAL_COUNT;
-  const hiddenCount = awards.length - INITIAL_COUNT;
 
   return (
     <Section id="studies" index="05 —" title="Studies">
