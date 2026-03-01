@@ -2,10 +2,11 @@ import React from 'react';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-neutral-100 dark:bg-neutral-800 py-8 mt-12">
-      <div className="container flex flex-col items-center justify-center">
-        <p className="text-neutral-600 dark:text-neutral-400 text-sm">
-          ©Airhood 2025
+    <footer className="border-t border-neutral-200 dark:border-neutral-800/60 py-10 mt-8">
+      <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <span className="text-xl font-black text-gradient">Airhood</span>
+        <p className="text-sm text-neutral-500 dark:text-neutral-500">
+          © 2025 Airhood. All rights reserved.
         </p>
       </div>
     </footer>

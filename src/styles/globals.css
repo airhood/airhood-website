@@ -3,54 +3,191 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
-    @apply bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white;
+    @apply bg-white dark:bg-[#0a0a0f] text-neutral-900 dark:text-white;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
   }
 }
 
-@layer components {
-  .container {
-    @apply mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl;
-  }
-  
-  .section {
-    @apply py-12 md:py-16 lg:py-20;
-  }
-  
-  .section-divider {
-    @apply border-t border-neutral-200 dark:border-neutral-800 my-8;
-  }
-  
-  .section-title {
-    @apply text-3xl font-bold text-neutral-900 dark:text-white mb-6 pb-2 border-b-2 border-primary-500 dark:border-primary-400 inline-block;
+@layer utilities {
+  /* blue-600 → violet-500 → fuchsia-600 — 밝은 배경에서도 끝 글자 잘 보임 */
+  .text-gradient {
+    @apply bg-gradient-to-r from-blue-600 via-violet-500 to-fuchsia-600 bg-clip-text text-transparent;
   }
 }
 
-.section-title {
-  border-bottom: none !important;
-  position: relative;
-  display: inline-block;
-  font-size: 1.875rem;
-  font-weight: 700;
-  color: #1f2937;
+/* ─── Dark mode smooth transition ─────────────────────────────────────────── */
+.theme-transitioning,
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+  transition:
+    background-color 0.4s ease,
+    border-color     0.35s ease,
+    color            0.3s ease,
+    box-shadow       0.4s ease !important;
 }
 
-/* src/styles/globals.css */
-.section-title {
-  position: relative !important;
-  display: inline-block !important;
-  font-size: 1.875rem; /* 3xl */
-  font-weight: 700; /* bold */
-  color: #1f2937;
+/* ─── Scroll reveal — section container ───────────────────────────────────── */
+.scroll-fade {
+  opacity: 0;
+  transform: translateY(2.5rem) scale(0.98);
+  transition: opacity 0.7s cubic-bezier(0.34, 1.4, 0.64, 1),
+              transform 0.7s cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+.scroll-fade.in-view {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
-.section-title::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -6px;
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899) !important;
-  border-radius: 4px;
+/* ─── Section title — slide from left ─────────────────────────────────────── */
+.slide-left {
+  opacity: 0;
+  transform: translateX(-1.8rem);
+  transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.slide-left-delay {
+  opacity: 0;
+  transform: translateX(-1.8rem);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s,
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+}
+.scroll-fade.in-view .slide-left,
+.scroll-fade.in-view .slide-left-delay {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* ─── Stagger — grid/list 아이템 순차 bounce-in ───────────────────────────── */
+@keyframes popIn {
+  from { opacity: 0; transform: translateY(1.8rem) scale(0.93); }
+  to   { opacity: 1; transform: translateY(0)      scale(1);    }
+}
+
+.stagger > * { opacity: 0; } /* in-view 전까지 숨김 */
+
+.scroll-fade.in-view .stagger > * {
+  animation: popIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+.scroll-fade.in-view .stagger > *:nth-child(1)  { animation-delay: 0.05s; }
+.scroll-fade.in-view .stagger > *:nth-child(2)  { animation-delay: 0.10s; }
+.scroll-fade.in-view .stagger > *:nth-child(3)  { animation-delay: 0.15s; }
+.scroll-fade.in-view .stagger > *:nth-child(4)  { animation-delay: 0.20s; }
+.scroll-fade.in-view .stagger > *:nth-child(5)  { animation-delay: 0.25s; }
+.scroll-fade.in-view .stagger > *:nth-child(6)  { animation-delay: 0.30s; }
+.scroll-fade.in-view .stagger > *:nth-child(7)  { animation-delay: 0.35s; }
+.scroll-fade.in-view .stagger > *:nth-child(8)  { animation-delay: 0.40s; }
+.scroll-fade.in-view .stagger > *:nth-child(9)  { animation-delay: 0.45s; }
+.scroll-fade.in-view .stagger > *:nth-child(10) { animation-delay: 0.50s; }
+.scroll-fade.in-view .stagger > *:nth-child(11) { animation-delay: 0.55s; }
+.scroll-fade.in-view .stagger > *:nth-child(12) { animation-delay: 0.60s; }
+.scroll-fade.in-view .stagger > *:nth-child(13) { animation-delay: 0.65s; }
+
+/* reduced-motion 대응 */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-fade, .slide-left, .slide-left-delay {
+    transition: opacity 0.3s ease;
+    transform: none;
+  }
+  .scroll-fade.in-view .stagger > * {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* ─── Hero entrance ────────────────────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(1.5rem); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.hero-fade-1 { animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.1s  both; }
+.hero-fade-2 { animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.22s both; }
+.hero-fade-3 { animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.36s both; }
+.hero-fade-4 { animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.5s  both; }
+.hero-fade-5 { animation: fadeIn  0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.4s  both; }
+
+/* ─── Background orb float ─────────────────────────────────────────────────── */
+@keyframes floatA {
+  0%, 100% { transform: translateY(0px)   translateX(0px);  }
+  33%      { transform: translateY(-24px) translateX(8px);  }
+  66%      { transform: translateY(-8px)  translateX(-12px);}
+}
+
+@keyframes floatB {
+  0%, 100% { transform: translateY(0px)  translateX(0px); }
+  33%      { transform: translateY(16px) translateX(-10px);}
+  66%      { transform: translateY(-12px)translateX(8px); }
+}
+
+@keyframes floatC {
+  0%, 100% { transform: translateY(0px)   translateX(0px); }
+  50%      { transform: translateY(-18px) translateX(14px);}
+}
+
+.orb-a { animation: floatA 9s  ease-in-out infinite; }
+.orb-b { animation: floatB 11s ease-in-out infinite 1s; }
+.orb-c { animation: floatC 13s ease-in-out infinite 2.5s; }
+
+/* ─── Scroll indicator ─────────────────────────────────────────────────────── */
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0);    opacity: 1; }
+  50%      { transform: translateY(6px);  opacity: 0.4; }
+}
+
+.scroll-indicator { animation: scrollBounce 1.8s ease-in-out infinite; }
+
+/* ─── Custom scrollbar ─────────────────────────────────────────────────────── */
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #60a5fa transparent;
+}
+
+/* WebKit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, #bae6fd, #60a5fa, #3b82f6);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #7dd3fc, #3b82f6, #2563eb);
+}
+
+/* ─── Spotlight card effect ─────────────────────────────────────────────────── */
+.spotlight-overlay {
+  background: radial-gradient(
+    260px circle at var(--sx, 50%) var(--sy, 50%),
+    rgba(139, 92, 246, 0.10),
+    transparent 65%
+  );
+}
+
+.dark .spotlight-overlay {
+  background: radial-gradient(
+    260px circle at var(--sx, 50%) var(--sy, 50%),
+    rgba(139, 92, 246, 0.18),
+    transparent 65%
+  );
 }
