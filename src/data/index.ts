@@ -40,22 +40,22 @@ export const techStacks: TechStack[] = [
 
 export const projects: Project[] = [
   {
-    title: '프로젝트 제목',
-    description: '프로젝트 설명을 여기에 작성하세요. 어떤 문제를 해결했는지, 어떤 기술을 사용했는지 간략하게 소개합니다.',
-    tags: ['C#', 'Go'],
-    githubUrl: 'https://github.com/airhood',
+    title: 'Slent',
+    description: '새롭게 설계한 언어 Slent와 이를 바이트코드로 컴파일하는 Slent Compiler, 그리고 이를 실행하는 Slent VM',
+    tags: ['Slent', 'C', 'C++'],
+    githubUrl: 'https://github.com/airhood/Slent',
   },
   {
-    title: '프로젝트 제목',
-    description: '프로젝트 설명을 여기에 작성하세요. 어떤 문제를 해결했는지, 어떤 기술을 사용했는지 간략하게 소개합니다.',
-    tags: ['React', 'TypeScript'],
-    githubUrl: 'https://github.com/airhood',
+    title: 'Cubic Engine',
+    description: 'OpenGL을 기반으로 한 C++ 3D 게임 엔진',
+    tags: ['C++', 'OpenGL'],
+    githubUrl: 'https://github.com/airhood/CubicEngine',
   },
   {
-    title: '프로젝트 제목',
-    description: '프로젝트 설명을 여기에 작성하세요. 어떤 문제를 해결했는지, 어떤 기술을 사용했는지 간략하게 소개합니다.',
-    tags: ['Flutter', 'Dart'],
-    githubUrl: 'https://github.com/airhood',
+    title: 'Dimo',
+    description: '주식/선물/옵션/대출/예적금/펀드/ETF/부동산/도박/뉴스/거래예약/자동매매/전략백테스팅 등 다양한 기능을 가진 투자 시뮬레이션 디스코드 봇',
+    tags: ['Javascript', 'DiscordJS'],
+    githubUrl: 'https://github.com/airhood/Dimo',
   },
 ];
 
