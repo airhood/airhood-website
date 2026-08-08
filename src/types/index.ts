@@ -28,7 +28,7 @@ export interface Project {
   type?: 'competition' | 'research';
   githubUrl?: string;
   liveUrl?: string;
-  pdf?: string;
+  pdf?: string | string[];
 }
 
 export interface Goal {

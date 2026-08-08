@@ -22,7 +22,7 @@ const PdfViewer: React.FC<Props> = ({ file }) => {
   return (
     <div
       ref={containerRef}
-      className="flex flex-col items-center gap-4 bg-ink border border-line rounded-card py-8 px-4 max-h-[85vh] overflow-y-auto"
+      className="flex flex-col items-center gap-4 bg-ink border border-line rounded-card py-8 px-4"
     >
       <Document
         file={file}

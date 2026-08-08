@@ -12,13 +12,13 @@ const ProjectCard: React.FC<{ project: (typeof projects)[number] }> = ({ project
       to={`/projects/${project.slug}`}
       className="group flex flex-col h-full min-h-[340px] bg-surface border border-line rounded-card overflow-hidden hover:border-signal/40 transition-colors duration-200"
     >
-      <div className="relative h-20 flex-shrink-0 bg-surface-2 overflow-hidden">
+      <div className="relative h-28 flex-shrink-0 bg-surface-2 overflow-hidden">
         {year && (
-          <span className="absolute -bottom-2 -right-2 font-display text-6xl font-black text-line leading-none select-none">
+          <span className="absolute -bottom-2 right-4 font-display text-7xl font-black text-line leading-none select-none">
             {year}
           </span>
         )}
-        <ProjectIcon project={project} size={20} className="absolute top-4 left-5 text-signal/70" />
+        <ProjectIcon project={project} size={20} className="absolute top-5 left-5 text-signal/70" />
       </div>
 
       <div className="flex flex-col flex-1 p-6">

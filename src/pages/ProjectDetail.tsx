@@ -30,13 +30,13 @@ const ProjectDetail: React.FC = () => {
         <HiArrowLeft size={12} /> PROJECTS
       </Link>
 
-      <div className="relative h-24 rounded-card bg-surface-2 border border-line overflow-hidden mb-8">
+      <div className="relative h-32 rounded-card bg-surface-2 border border-line overflow-hidden mb-8">
         {year && (
-          <span className="absolute -bottom-3 -right-2 font-display text-7xl font-black text-line leading-none select-none">
+          <span className="absolute -bottom-3 right-4 font-display text-8xl font-black text-line leading-none select-none">
             {year}
           </span>
         )}
-        <ProjectIcon project={project} size={24} className="absolute top-5 left-6 text-signal/70" />
+        <ProjectIcon project={project} size={24} className="absolute top-6 left-6 text-signal/70" />
       </div>
 
       <div className="flex items-start justify-between gap-4 flex-wrap mb-3">
@@ -90,7 +90,11 @@ const ProjectDetail: React.FC = () => {
 
       {project.pdf && (
         <Suspense fallback={<p className="text-sm text-muted py-16">불러오는 중...</p>}>
-          <PdfViewer file={project.pdf} />
+          <div className="flex flex-col gap-8">
+            {(Array.isArray(project.pdf) ? project.pdf : [project.pdf]).map((file) => (
+              <PdfViewer key={file} file={file} />
+            ))}
+          </div>
         </Suspense>
       )}
     </div>
