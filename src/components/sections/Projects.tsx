@@ -1,74 +1,91 @@
 import React from 'react';
-import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { FaGithub, FaFileAlt } from 'react-icons/fa';
+import { HiArrowRight } from 'react-icons/hi';
 import Section from '../common/Section.tsx';
-import SpotlightCard from '../common/SpotlightCard.tsx';
+import ProjectIcon from '../common/ProjectIcon.tsx';
 import { Project } from '../../types/index.ts';
 
 interface Props {
   projects: Project[];
 }
 
+const PREVIEW_COUNT = 3;
+
 const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
+  const year = project.date?.slice(0, 4);
+
   return (
-    <SpotlightCard className="group flex flex-col bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 hover:border-blue-500/40 dark:hover:border-blue-500/30 hover:shadow-xl hover:shadow-blue-500/5 hover:-translate-y-1 transition-all duration-300">
-      {/* Title */}
-      <h3 className="text-lg font-bold text-neutral-900 dark:text-white mb-3 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors duration-300">
-        {project.title}
-      </h3>
-
-      {/* Description */}
-      <p className="text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed flex-1 mb-5">
-        {project.description}
-      </p>
-
-      {/* Tags */}
-      <div className="flex flex-wrap gap-2 mb-5">
-        {project.tags.map((tag) => (
-          <span
-            key={tag}
-            className="px-2.5 py-1 rounded-lg text-xs font-medium bg-neutral-200/60 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400"
-          >
-            {tag}
+    <Link
+      to={`/projects/${project.slug}`}
+      className="group flex flex-col h-full min-h-[300px] bg-surface border border-line rounded-card overflow-hidden hover:border-signal/40 transition-colors duration-200"
+    >
+      <div className="relative h-16 flex-shrink-0 bg-surface-2 overflow-hidden">
+        {year && (
+          <span className="absolute -bottom-2 -right-2 font-display text-5xl font-black text-line leading-none select-none">
+            {year}
           </span>
-        ))}
+        )}
+        <ProjectIcon project={project} size={18} className="absolute top-3.5 left-4 text-signal/70" />
       </div>
 
-      {/* Links */}
-      <div className="flex items-center gap-3 pt-4 border-t border-neutral-200 dark:border-neutral-800">
-        {project.githubUrl && (
-          <a
-            href={project.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
-          >
-            <FaGithub size={15} />
-            <span>GitHub</span>
-          </a>
-        )}
-        {project.liveUrl && (
-          <a
-            href={project.liveUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-sm text-neutral-500 dark:text-neutral-400 hover:text-blue-500 transition-colors"
-          >
-            <FaExternalLinkAlt size={13} />
-            <span>Live</span>
-          </a>
+      <div className="flex flex-col flex-1 p-5">
+        <h3 className="font-bold text-text mb-2 group-hover:text-signal transition-colors duration-200">
+          {project.title}
+        </h3>
+
+        <p className="text-sm text-muted leading-relaxed flex-1 line-clamp-3">
+          {project.description}
+        </p>
+
+        <div className="flex flex-wrap gap-1.5 mt-4">
+          {project.tags.slice(0, 3).map((tag) => (
+            <span key={tag} className="px-2 py-0.5 rounded font-signal text-[11px] text-muted bg-surface-2">
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        {(project.githubUrl || project.pdf) && (
+          <div className="flex items-center gap-3 mt-4 pt-4 border-t border-line text-xs text-muted">
+            {project.githubUrl && (
+              <span className="flex items-center gap-1.5">
+                <FaGithub size={13} />
+                GitHub
+              </span>
+            )}
+            {project.pdf && (
+              <span className="flex items-center gap-1.5 text-signal">
+                <FaFileAlt size={12} />
+                Paper
+              </span>
+            )}
+          </div>
         )}
       </div>
-    </SpotlightCard>
+    </Link>
   );
 };
 
 const Projects: React.FC<Props> = ({ projects }) => {
+  const preview = projects.slice(0, PREVIEW_COUNT);
+
   return (
-    <Section id="projects" index="04 —" title="Projects">
-      <div className="stagger grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {projects.map((project, i) => (
-          <ProjectCard key={i} project={project} />
+    <Section id="projects" title="Projects">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {preview.map((project) => (
+          <ProjectCard key={project.slug} project={project} />
         ))}
+      </div>
+
+      <div className="mt-6">
+        <Link
+          to="/projects"
+          className="inline-flex items-center gap-1.5 font-signal text-sm text-muted hover:text-text transition-colors duration-200"
+        >
+          <span>View all projects</span>
+          <HiArrowRight size={14} />
+        </Link>
       </div>
     </Section>
   );

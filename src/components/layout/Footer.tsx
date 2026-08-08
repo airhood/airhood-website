@@ -2,11 +2,11 @@ import React from 'react';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="border-t border-neutral-200 dark:border-neutral-800/60 py-10 mt-8">
-      <div className="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <span className="text-xl font-black text-gradient">Airhood</span>
-        <p className="text-sm text-neutral-500 dark:text-neutral-500">
-          © 2025 Airhood. All rights reserved.
+    <footer className="border-t border-line py-10 mb-8">
+      <div className="max-w-content mx-auto px-6 sm:px-10 md:px-16 lg:px-24 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <span className="font-display font-extrabold text-lg text-text">Airhood</span>
+        <p className="font-signal text-xs text-muted">
+          © {new Date().getFullYear()} Airhood. All rights reserved.
         </p>
       </div>
     </footer>

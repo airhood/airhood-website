@@ -1,27 +1,16 @@
 import React from 'react';
-import { useInView } from '../../hooks/useInView.ts';
 
 interface SectionProps {
   id?: string;
-  index: string;
   title: string;
   children: React.ReactNode;
 }
 
-const Section: React.FC<SectionProps> = ({ id, index, title, children }) => {
-  const { ref, inView } = useInView();
-
+const Section: React.FC<SectionProps> = ({ id, title, children }) => {
   return (
-    <section
-      id={id}
-      ref={ref as React.RefObject<HTMLElement>}
-      className={`scroll-fade ${inView ? 'in-view' : ''} py-24`}
-    >
-      <div className="max-w-6xl mx-auto px-6">
-        <p className="slide-left font-mono text-sm text-blue-500 dark:text-blue-400 mb-2">
-          {index}
-        </p>
-        <h2 className="slide-left-delay text-4xl md:text-5xl font-black text-neutral-900 dark:text-white mb-12">
+    <section id={id} className="py-14 md:py-16 scroll-mt-16">
+      <div className="max-w-content mx-auto px-6 sm:px-10 md:px-16 lg:px-24">
+        <h2 className="font-display text-3xl md:text-4xl font-black tracking-tight text-text mb-8">
           {title}
         </h2>
         {children}

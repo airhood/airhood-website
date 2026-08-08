@@ -19,18 +19,16 @@ export interface Interest {
 }
 
 export interface Project {
+  slug: string;
   title: string;
   description: string;
   tags: string[];
+  date?: string;
+  organization?: string;
+  type?: 'competition' | 'research';
   githubUrl?: string;
   liveUrl?: string;
-}
-
-export interface Award {
-  title: string;
-  organization: string;
-  date: string;
-  description?: string;
+  pdf?: string;
 }
 
 export interface Goal {

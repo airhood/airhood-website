@@ -1,5 +1,6 @@
 import React from 'react';
 import Section from '../common/Section.tsx';
+import profile_image from '../../assets/images/Airhood_Fixed.png';
 
 const stats = [
   { value: '5년+', label: '프로그래밍 경력' },
@@ -8,23 +9,28 @@ const stats = [
 
 const AboutMe: React.FC = () => {
   return (
-    <Section id="about" index="01 —" title="About Me">
-      <div className="stagger grid sm:grid-cols-2 gap-4 mb-6">
-        {stats.map((stat) => (
-          <div
-            key={stat.label}
-            className="bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6 hover:border-blue-500/30 transition-colors"
-          >
-            <div className="text-3xl font-black text-gradient mb-1">{stat.value}</div>
-            <div className="text-sm text-neutral-500 dark:text-neutral-400">{stat.label}</div>
+    <Section id="about" title="About Me">
+      <div className="flex items-start gap-6 max-w-2xl">
+        <img
+          src={profile_image}
+          alt="Airhood"
+          className="w-16 h-16 rounded-card border border-line flex-shrink-0"
+        />
+        <div>
+          <p className="text-lg text-text leading-relaxed mb-3">
+            Hello, I'm Airhood!
+          </p>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-signal text-xs text-muted">
+            {stats.map((stat, i) => (
+              <React.Fragment key={stat.label}>
+                {i > 0 && <span className="text-line">·</span>}
+                <span>
+                  <span className="text-signal font-semibold">{stat.value}</span> {stat.label}
+                </span>
+              </React.Fragment>
+            ))}
           </div>
-        ))}
-      </div>
-
-      <div className="bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6">
-        <p className="text-neutral-700 dark:text-neutral-300 leading-relaxed">
-          Hello, I'm Airhood!
-        </p>
+        </div>
       </div>
     </Section>
   );

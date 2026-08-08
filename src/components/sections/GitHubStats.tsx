@@ -25,11 +25,11 @@ const LANG_COLORS: Record<string, string> = {
   'Ruby':         '#701516',
 };
 
-const DEFAULT_COLOR = '#8b5cf6';
+const DEFAULT_COLOR = '#8b8f99';
 
 // ── 스켈레톤 ──────────────────────────────────────────────────────────────────
-const Skeleton: React.FC<{ className?: string }> = ({ className = '' }) => (
-  <div className={`animate-pulse bg-neutral-200 dark:bg-neutral-800 rounded-lg ${className}`} />
+const Skeleton: React.FC<{ className?: string; style?: React.CSSProperties }> = ({ className = '', style }) => (
+  <div className={`animate-pulse bg-surface-2 rounded-lg ${className}`} style={style} />
 );
 
 // ── 통계 카드 ─────────────────────────────────────────────────────────────────
@@ -41,8 +41,8 @@ interface StatCardProps {
 }
 
 const StatCard: React.FC<StatCardProps> = ({ icon, label, value, loading }) => (
-  <div className="bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-5 flex flex-col gap-2">
-    <div className="text-neutral-400 dark:text-neutral-500 text-lg">{icon}</div>
+  <div className="bg-surface border border-line rounded-card p-5 flex flex-col gap-2">
+    <div className="text-muted text-lg">{icon}</div>
     {loading ? (
       <>
         <Skeleton className="h-8 w-16" />
@@ -50,8 +50,8 @@ const StatCard: React.FC<StatCardProps> = ({ icon, label, value, loading }) => (
       </>
     ) : (
       <>
-        <span className="text-3xl font-black text-gradient leading-none">{value}</span>
-        <span className="text-xs text-neutral-500 dark:text-neutral-400 font-medium">{label}</span>
+        <span className="font-display text-2xl font-extrabold text-text leading-none">{value}</span>
+        <span className="text-xs text-muted font-medium">{label}</span>
       </>
     )}
   </div>
@@ -62,7 +62,7 @@ const GitHubStats: React.FC = () => {
   const stats = useGitHubStats();
 
   return (
-    <Section id="github" index="06 —" title="GitHub Stats">
+    <Section id="github" title="GitHub Stats">
       {/* 통계 카드 4개 */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
         <StatCard icon={<GoRepoForked />} label="Repositories" value={stats.publicRepos} loading={stats.loading} />
@@ -72,8 +72,8 @@ const GitHubStats: React.FC = () => {
       </div>
 
       {/* 언어 통계 */}
-      <div className="bg-neutral-50 dark:bg-neutral-900/50 border border-neutral-200 dark:border-neutral-800 rounded-2xl p-6">
-        <h3 className="text-sm font-semibold text-neutral-500 dark:text-neutral-400 uppercase tracking-widest mb-6">
+      <div className="bg-surface border border-line rounded-card p-6">
+        <h3 className="font-signal text-xs text-muted uppercase tracking-widest mb-6">
           Top Languages
         </h3>
 
@@ -82,7 +82,7 @@ const GitHubStats: React.FC = () => {
             {[80, 60, 45, 30, 20].map((w, i) => (
               <div key={i} className="flex items-center gap-3">
                 <Skeleton className="h-3.5 w-24" />
-                <div className="flex-1 h-2 bg-neutral-200 dark:bg-neutral-800 rounded-full">
+                <div className="flex-1 h-2 bg-surface-2 rounded-full">
                   <Skeleton className={`h-full rounded-full`} style={{ width: `${w}%` } as React.CSSProperties} />
                 </div>
                 <Skeleton className="h-3.5 w-8" />
@@ -90,7 +90,7 @@ const GitHubStats: React.FC = () => {
             ))}
           </div>
         ) : stats.error ? (
-          <p className="text-sm text-neutral-500 dark:text-neutral-400">
+          <p className="text-sm text-muted">
             데이터를 불러올 수 없어요. GitHub API 요청 한도를 초과했을 수 있어요.
           </p>
         ) : (
@@ -104,19 +104,19 @@ const GitHubStats: React.FC = () => {
                       className="w-2.5 h-2.5 rounded-full flex-shrink-0"
                       style={{ backgroundColor: color }}
                     />
-                    <span className="text-sm font-medium text-neutral-700 dark:text-neutral-300 truncate">
+                    <span className="text-sm font-medium text-text truncate">
                       {lang.name}
                     </span>
                   </div>
 
-                  <div className="flex-1 h-2 bg-neutral-200 dark:bg-neutral-800 rounded-full overflow-hidden">
+                  <div className="flex-1 h-2 bg-surface-2 rounded-full overflow-hidden">
                     <div
                       className="h-full rounded-full"
                       style={{ width: `${lang.percent}%`, backgroundColor: color }}
                     />
                   </div>
 
-                  <span className="text-xs font-mono text-neutral-500 dark:text-neutral-400 w-10 text-right flex-shrink-0">
+                  <span className="font-signal text-xs text-muted w-10 text-right flex-shrink-0">
                     {lang.percent}%
                   </span>
                 </div>
@@ -132,7 +132,7 @@ const GitHubStats: React.FC = () => {
           href="https://github.com/Airhood"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center gap-2 text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white transition-colors"
+          className="flex items-center gap-2 text-sm text-muted hover:text-text transition-colors"
         >
           <FaGithub size={15} />
           <span>github.com/Airhood</span>

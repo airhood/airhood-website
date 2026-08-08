@@ -86,3 +86,7 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+
+# 대용량 보고서 PDF — GitHub Release에서 빌드 시 자동 다운로드됨 (scripts/fetch-large-reports.mjs)
+public/reports/pullobot.pdf
+public/reports/vla-disaster-response.pdf
