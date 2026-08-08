@@ -1,15 +1,26 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion, useReducedMotion } from 'motion/react';
 import { FaGithub, FaFileAlt } from 'react-icons/fa';
 import ProjectIcon from '../components/common/ProjectIcon.tsx';
 import { projects } from '../data/index.ts';
+import { revealUp, viewportOnce } from '../lib/motion.ts';
+
+const MotionLink = motion.create(Link);
 
 const ProjectCard: React.FC<{ project: (typeof projects)[number] }> = ({ project }) => {
   const year = project.date?.slice(0, 4);
+  const reduceMotion = useReducedMotion();
 
   return (
-    <Link
+    <MotionLink
       to={`/projects/${project.slug}`}
+      initial={reduceMotion ? undefined : 'hidden'}
+      whileInView={reduceMotion ? undefined : 'visible'}
+      viewport={viewportOnce}
+      variants={revealUp}
+      whileHover={{ y: -3 }}
+      transition={{ duration: 0.2 }}
       className="group flex flex-col h-full min-h-[340px] bg-surface border border-line rounded-card overflow-hidden hover:border-signal/40 transition-colors duration-200"
     >
       <div className="relative h-28 flex-shrink-0 bg-surface-2 overflow-hidden">
@@ -61,7 +72,7 @@ const ProjectCard: React.FC<{ project: (typeof projects)[number] }> = ({ project
           </div>
         )}
       </div>
-    </Link>
+    </MotionLink>
   );
 };
 

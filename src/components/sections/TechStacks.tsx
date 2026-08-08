@@ -1,6 +1,8 @@
 import React from 'react';
+import { motion, useReducedMotion } from 'motion/react';
 import { TechStack } from '../../types';
 import Section from '../common/Section.tsx';
+import { staggerContainer, staggerItem, viewportOnce } from '../../lib/motion.ts';
 
 interface Props {
   techStacks: TechStack[];
@@ -16,7 +18,8 @@ const TechCard: React.FC<{ stack: TechStack }> = ({ stack }) => {
   const Icon = stack.icon as React.ComponentType<{ className?: string }>;
 
   return (
-    <div
+    <motion.div
+      variants={staggerItem}
       title={stack.description}
       className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-card bg-surface border border-line hover:border-signal/40 transition-colors duration-200 cursor-default"
     >
@@ -24,12 +27,13 @@ const TechCard: React.FC<{ stack: TechStack }> = ({ stack }) => {
       <span className="text-sm font-semibold text-text whitespace-nowrap">
         {stack.name}
       </span>
-    </div>
+    </motion.div>
   );
 };
 
 const TechStacks: React.FC<Props> = ({ techStacks }) => {
   const categories = ['language', 'framework', 'tool'] as const;
+  const reduceMotion = useReducedMotion();
 
   return (
     <Section id="tech" title="Tech Stacks">
@@ -42,11 +46,17 @@ const TechStacks: React.FC<Props> = ({ techStacks }) => {
               <p className="font-signal text-xs text-muted uppercase tracking-widest mb-3">
                 {CATEGORY_LABELS[cat]}
               </p>
-              <div className="flex flex-wrap gap-2.5">
+              <motion.div
+                initial={reduceMotion ? undefined : 'hidden'}
+                whileInView={reduceMotion ? undefined : 'visible'}
+                viewport={viewportOnce}
+                variants={staggerContainer}
+                className="flex flex-wrap gap-2.5"
+              >
                 {items.map((stack, idx) => (
                   <TechCard key={idx} stack={stack} />
                 ))}
-              </div>
+              </motion.div>
             </div>
           );
         })}

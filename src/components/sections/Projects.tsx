@@ -1,32 +1,38 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion, useReducedMotion } from 'motion/react';
 import { FaGithub, FaFileAlt } from 'react-icons/fa';
 import { HiArrowRight } from 'react-icons/hi';
 import Section from '../common/Section.tsx';
 import ProjectIcon from '../common/ProjectIcon.tsx';
 import { Project } from '../../types/index.ts';
+import { staggerContainer, staggerItem, viewportOnce } from '../../lib/motion.ts';
 
 interface Props {
   projects: Project[];
 }
 
 const PREVIEW_COUNT = 3;
+const MotionLink = motion.create(Link);
 
 const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
   const year = project.date?.slice(0, 4);
 
   return (
-    <Link
+    <MotionLink
       to={`/projects/${project.slug}`}
+      variants={staggerItem}
+      whileHover={{ y: -3 }}
+      transition={{ duration: 0.2 }}
       className="group flex flex-col h-full min-h-[300px] bg-surface border border-line rounded-card overflow-hidden hover:border-signal/40 transition-colors duration-200"
     >
-      <div className="relative h-16 flex-shrink-0 bg-surface-2 overflow-hidden">
+      <div className="relative h-24 flex-shrink-0 bg-surface-2 overflow-hidden">
         {year && (
-          <span className="absolute -bottom-2 -right-2 font-display text-5xl font-black text-line leading-none select-none">
+          <span className="absolute -bottom-2 right-4 font-display text-6xl font-black text-line leading-none select-none">
             {year}
           </span>
         )}
-        <ProjectIcon project={project} size={18} className="absolute top-3.5 left-4 text-signal/70" />
+        <ProjectIcon project={project} size={18} className="absolute top-4 left-4 text-signal/70" />
       </div>
 
       <div className="flex flex-col flex-1 p-5">
@@ -63,20 +69,27 @@ const ProjectCard: React.FC<{ project: Project }> = ({ project }) => {
           </div>
         )}
       </div>
-    </Link>
+    </MotionLink>
   );
 };
 
 const Projects: React.FC<Props> = ({ projects }) => {
   const preview = projects.slice(0, PREVIEW_COUNT);
+  const reduceMotion = useReducedMotion();
 
   return (
     <Section id="projects" title="Projects">
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <motion.div
+        initial={reduceMotion ? undefined : 'hidden'}
+        whileInView={reduceMotion ? undefined : 'visible'}
+        viewport={viewportOnce}
+        variants={staggerContainer}
+        className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"
+      >
         {preview.map((project) => (
           <ProjectCard key={project.slug} project={project} />
         ))}
-      </div>
+      </motion.div>
 
       <div className="mt-6">
         <Link
