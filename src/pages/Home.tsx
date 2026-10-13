@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useHeroSnap } from '../hooks/useHeroSnap.ts';
 import Hero from '../components/sections/Hero.tsx';
 import AboutMe from '../components/sections/AboutMe.tsx';
 import Interests from '../components/sections/Interests.tsx';
@@ -12,6 +13,7 @@ import { socialLinks, interests, techStacks, projects, goals } from '../data/ind
 
 const Home: React.FC = () => {
   const { hash } = useLocation();
+  useHeroSnap();
 
   useEffect(() => {
     if (!hash) return;

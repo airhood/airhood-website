@@ -24,8 +24,8 @@
 
 .dark {
   --ink: #0A0B0D;
-  --surface: #131519;
-  --surface-2: #1C1F24;
+  --surface: #16191E;
+  --surface-2: #20242B;
   --line: #3A414B;
   --text: #E6E9EE;
   --muted: #8B95A3;
@@ -42,6 +42,8 @@
     background-color: var(--ink);
     color: var(--text);
     font-family: 'Instrument Sans', 'Pretendard Variable', system-ui, sans-serif;
+    word-break: keep-all;      /* 한국어는 단어(어절) 단위로 줄바꿈 — '시스/템'처럼 끊기지 않게 */
+    overflow-wrap: break-word; /* 공백 없는 긴 문자열은 넘치지 않게 */
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
@@ -52,6 +54,12 @@
   .font-display {
     font-family: 'Archivo Variable', 'Pretendard Variable', system-ui, sans-serif;
     font-stretch: 120%;
+  }
+
+  /* 한국어 문장 전용 — 한글/영문/문장부호(·)를 한 글꼴로 그려서 섞여 보이는 문제 방지 */
+  .font-ko {
+    font-family: 'Pretendard Variable', 'Instrument Sans', system-ui, sans-serif;
+    word-break: keep-all;
   }
 
   .font-signal {

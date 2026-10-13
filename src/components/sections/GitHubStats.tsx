@@ -41,7 +41,7 @@ interface StatCardProps {
 }
 
 const StatCard: React.FC<StatCardProps> = ({ icon, label, value, loading }) => (
-  <div className="bg-surface border border-line rounded-card p-5 flex flex-col gap-2">
+  <div className="bg-surface rounded-card p-5 flex flex-col gap-2">
     <div className="text-muted text-lg">{icon}</div>
     {loading ? (
       <>
@@ -72,7 +72,7 @@ const GitHubStats: React.FC = () => {
       </div>
 
       {/* 언어 통계 */}
-      <div className="bg-surface border border-line rounded-card p-6">
+      <div className="bg-surface rounded-card p-6">
         <h3 className="font-signal text-xs text-muted uppercase tracking-widest mb-6">
           Top Languages
         </h3>

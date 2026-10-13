@@ -21,7 +21,7 @@ const TechCard: React.FC<{ stack: TechStack }> = ({ stack }) => {
     <motion.div
       variants={staggerItem}
       title={stack.description}
-      className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-card bg-surface border border-line hover:border-signal/40 transition-colors duration-200 cursor-default"
+      className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-card bg-surface hover:bg-surface-2 transition-colors duration-200 cursor-default"
     >
       <Icon className="text-base text-muted flex-shrink-0" />
       <span className="text-sm font-semibold text-text whitespace-nowrap">

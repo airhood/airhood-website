@@ -65,7 +65,7 @@ const Header: React.FC = () => {
               key={item.href}
               to={item.href}
               onClick={(e) => handleNavClick(e, item.href)}
-              className="font-signal text-xs uppercase tracking-widest text-muted hover:text-text transition-colors"
+              className="font-signal text-sm uppercase tracking-wider text-text opacity-75 hover:opacity-100 transition-opacity"
             >
               {item.label}
             </Link>

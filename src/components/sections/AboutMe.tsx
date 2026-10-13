@@ -14,7 +14,7 @@ const AboutMe: React.FC = () => {
         <img
           src={profile_image}
           alt="Airhood"
-          className="w-16 h-16 rounded-card border border-line flex-shrink-0"
+          className="w-16 h-16 rounded-card flex-shrink-0"
         />
         <div>
           <p className="text-lg text-text leading-relaxed mb-3">

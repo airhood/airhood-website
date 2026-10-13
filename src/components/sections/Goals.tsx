@@ -13,9 +13,9 @@ const Goals: React.FC<Props> = ({ goals }) => {
         {goals.map((goal, i) => (
           <div
             key={i}
-            className="group bg-surface border border-line rounded-card p-6 hover:border-signal/40 transition-colors duration-200"
+            className="group bg-surface rounded-card p-6 hover:bg-surface-2 transition-colors duration-200"
           >
-            <div className="text-3xl mb-4">{goal.emoji}</div>
+            <goal.icon size={26} className="mb-4 text-signal" />
             <h3 className="font-bold text-text mb-2 group-hover:text-signal transition-colors duration-200">
               {goal.title}
             </h3>

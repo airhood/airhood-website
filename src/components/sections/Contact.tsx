@@ -30,7 +30,7 @@ const Contact: React.FC = () => {
         {contacts.map((c) => (
           <div
             key={c.label}
-            className="flex items-center gap-4 bg-surface border border-line rounded-card p-6"
+            className="flex items-center gap-4 bg-surface rounded-card p-6"
           >
             <div className="w-11 h-11 rounded-card flex items-center justify-center bg-surface-2 text-muted flex-shrink-0">
               {c.icon}
