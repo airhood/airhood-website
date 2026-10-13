@@ -8,6 +8,7 @@ import { projects } from '../data/index.ts';
 
 const PdfViewer = lazy(() => import('../components/common/PdfViewer.tsx'));
 const SlideViewer = lazy(() => import('../components/common/SlideViewer.tsx'));
+const CodeViewer = lazy(() => import('../components/common/CodeViewer.tsx'));
 
 const ProjectDetail: React.FC = () => {
   const { slug } = useParams();
@@ -180,6 +181,12 @@ const ProjectDetail: React.FC = () => {
           </span>
           <FaExternalLinkAlt size={13} className="text-muted" />
         </a>
+      )}
+
+      {project.code && (
+        <Suspense fallback={<p className="text-sm text-muted py-16">불러오는 중...</p>}>
+          <CodeViewer {...project.code} />
+        </Suspense>
       )}
 
       {project.pdf && !project.sections && !project.poster && (

@@ -156,6 +156,7 @@ export const projects: Project[] = [
     type: 'research',
     description: '쿼리도를 완전정보·결정론적·순차적 제로섬 게임으로 분석하고, MCTS(Monte Carlo Tree Search) 기반 탐색 알고리즘을 설계·개선해 게임 AI를 구현하는 탐구',
     tags: ['Game AI', 'MCTS', 'Algorithm'],
+    code: { name: 'quoridor_ai.py', language: 'python', src: '/code/quoridor_ai.py' },
     pdf: '/reports/quoridor-ai.pdf',
   },
   {

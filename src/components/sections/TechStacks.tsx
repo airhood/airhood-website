@@ -20,13 +20,13 @@ const TechCard: React.FC<{ stack: TechStack }> = ({ stack }) => {
   return (
     <motion.div
       variants={staggerItem}
-      title={stack.description}
-      className="inline-flex items-center gap-2.5 px-3.5 py-2 rounded-card bg-surface hover:bg-surface-2 transition-colors duration-200 cursor-default"
+      className="bg-surface hover:bg-surface-2 rounded-card p-5 transition-colors duration-200"
     >
-      <Icon className="text-base text-muted flex-shrink-0" />
-      <span className="text-sm font-semibold text-text whitespace-nowrap">
-        {stack.name}
-      </span>
+      <Icon className="text-2xl text-text mb-4" />
+      <h3 className="font-display text-lg font-extrabold text-text mb-1">{stack.name}</h3>
+      {stack.description && (
+        <p className="font-ko text-base text-muted leading-relaxed">{stack.description}</p>
+      )}
     </motion.div>
   );
 };
@@ -37,21 +37,19 @@ const TechStacks: React.FC<Props> = ({ techStacks }) => {
 
   return (
     <Section id="tech" title="Tech Stacks">
-      <div className="space-y-6">
+      <div className="space-y-10">
         {categories.map((cat) => {
           const items = techStacks.filter((s) => s.category === cat);
           if (!items.length) return null;
           return (
             <div key={cat}>
-              <p className="font-signal text-xs text-muted uppercase tracking-widest mb-3">
-                {CATEGORY_LABELS[cat]}
-              </p>
+              <p className="text-base text-muted mb-4">{CATEGORY_LABELS[cat]}</p>
               <motion.div
                 initial={reduceMotion ? undefined : 'hidden'}
                 whileInView={reduceMotion ? undefined : 'visible'}
                 viewport={viewportOnce}
                 variants={staggerContainer}
-                className="flex flex-wrap gap-2.5"
+                className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
               >
                 {items.map((stack, idx) => (
                   <TechCard key={idx} stack={stack} />

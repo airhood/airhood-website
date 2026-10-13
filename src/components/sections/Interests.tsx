@@ -24,9 +24,9 @@ const Interests: React.FC<InterestsProps> = ({ interests }) => {
           <motion.div
             key={index}
             variants={staggerItem}
-            className="px-4 py-2 rounded-full bg-surface hover:bg-surface-2 hover:text-signal transition-colors duration-200 cursor-default"
+            className="px-5 py-2.5 rounded-full bg-surface hover:bg-surface-2 transition-colors duration-200 cursor-default"
           >
-            <span className="font-signal text-sm">
+            <span className="font-display text-lg font-bold text-text">
               {interest.name}
             </span>
           </motion.div>

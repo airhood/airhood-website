@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import type { PDFDocumentProxy } from 'pdfjs-dist';
-import { motion } from 'motion/react';
 import { HiChevronLeft, HiChevronRight } from 'react-icons/hi';
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
@@ -34,7 +33,7 @@ const SlideViewer: React.FC<Props> = ({ file }) => {
   const [pdf, setPdf] = useState<PDFDocumentProxy | null>(null);
   const [numPages, setNumPages] = useState<number | null>(null);
   const [page, setPage] = useState(1);
-  const [dir, setDir] = useState<1 | -1>(1);
+  const [shown, setShown] = useState(1); // 화면에 실제로 보이는 슬라이드 (새 슬라이드가 준비되기 전까지는 이전 것을 유지)
   const [width, setWidth] = useState(900);
   const [ratio, setRatio] = useState(9 / 16); // 높이/너비 — 첫 슬라이드에서 실제 값으로 갱신
   const [cache, setCache] = useState<Record<number, string>>({});
@@ -101,10 +100,13 @@ const SlideViewer: React.FC<Props> = ({ file }) => {
     []
   );
 
+  useEffect(() => {
+    if (cache[page]) setShown(page);
+  }, [page, cache]);
+
   const go = useCallback(
     (d: 1 | -1) => {
       if (!numPages) return;
-      setDir(d);
       setPage((p) => Math.min(numPages, Math.max(1, p + d)));
     },
     [numPages]
@@ -136,26 +138,37 @@ const SlideViewer: React.FC<Props> = ({ file }) => {
         error={<p className="text-sm text-muted py-16">PDF를 불러올 수 없어요.</p>}
       >
         {numPages && (
-          <motion.div
-            key={page}
-            style={{ minHeight: width * ratio }}
-            initial={{ opacity: 0, x: dir * 32 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.2, ease: 'easeOut' }}
-          >
-            {cache[page] ? (
-              <img src={cache[page]} alt={`슬라이드 ${page}`} draggable={false} className="w-full h-auto block rounded-card" />
-            ) : (
-              <Page
-                pageNumber={page}
-                width={width}
-                renderTextLayer={false}
-                renderAnnotationLayer={false}
-                onLoadSuccess={(p) => setRatio(p.originalHeight / p.originalWidth)}
-                className="rounded-card overflow-hidden"
-              />
+          <div className="relative" style={{ minHeight: width * ratio }}>
+            {/* 가까운 슬라이드 이미지는 미리 올려 두고 보이기만 바꾼다 — 다시 만들지 않으니 깜빡임이 없다 */}
+            {Object.keys(cache)
+              .map(Number)
+              .filter((n) => Math.abs(n - page) <= 2 || n === shown)
+              .map((n) => (
+                <img
+                  key={n}
+                  src={cache[n]}
+                  alt={`슬라이드 ${n}`}
+                  draggable={false}
+                  className="w-full h-auto block rounded-card absolute inset-0"
+                  style={{ visibility: n === shown ? 'visible' : 'hidden' }}
+                />
+              ))}
+            {/* 아직 저장되지 않은 슬라이드는 직접 그리고, 다 그려지면 그때 바꿔 보여 준다 */}
+            {!cache[page] && (
+              <div className="absolute inset-0" style={{ visibility: shown === page ? 'visible' : 'hidden' }}>
+                <Page
+                  key={page}
+                  pageNumber={page}
+                  width={width}
+                  renderTextLayer={false}
+                  renderAnnotationLayer={false}
+                  onRenderSuccess={() => setShown(page)}
+                  onLoadSuccess={(p) => setRatio(p.originalHeight / p.originalWidth)}
+                  className="rounded-card overflow-hidden"
+                />
+              </div>
             )}
-          </motion.div>
+          </div>
         )}
       </Document>
 
