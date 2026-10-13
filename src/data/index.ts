@@ -142,6 +142,11 @@ export const projects: Project[] = [
     description: 'AI가 만든 콘텐츠와 실제 콘텐츠를 사람들이 구별할 수 있는지 설문 조사를 진행하고, 그 결과를 통계적으로 분석하는 탐구',
     tags: ['Statistics', 'AI', 'Survey'],
     pdf: '/reports/ai-content-detection-survey.pdf',
+    image: '/images/projects/ai-content-detection-survey.jpg',
+    poster: {
+      image: '/images/projects/ai-content-detection-survey-poster.jpg',
+      pdf: '/reports/ai-content-detection-survey.pdf',
+    },
   },
   {
     slug: 'quoridor-ai',

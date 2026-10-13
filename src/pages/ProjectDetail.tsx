@@ -90,7 +90,18 @@ const ProjectDetail: React.FC = () => {
         </div>
       )}
 
-      {(project.poster || project.highlights) && (
+      {project.poster && !project.highlights && (
+        <a
+          href={project.poster.pdf}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block rounded-card overflow-hidden hover:opacity-90 transition-opacity mb-24"
+        >
+          <img src={project.poster.image} alt={`${project.title} poster`} className="w-full h-auto block" loading="lazy" />
+        </a>
+      )}
+
+      {project.highlights && (
         <div className="grid md:grid-cols-[minmax(0,7fr)_minmax(0,4fr)] gap-8 items-start mb-24">
           {project.poster && (
             <a
@@ -164,7 +175,7 @@ const ProjectDetail: React.FC = () => {
         </a>
       )}
 
-      {project.pdf && !project.sections && (
+      {project.pdf && !project.sections && !project.poster && (
         <Suspense fallback={<p className="text-sm text-muted py-16">불러오는 중...</p>}>
           <div className="flex flex-col gap-8">
             {(Array.isArray(project.pdf) ? project.pdf : [project.pdf]).map((file) => (
