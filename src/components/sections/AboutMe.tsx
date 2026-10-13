@@ -10,27 +10,24 @@ const stats = [
 const AboutMe: React.FC = () => {
   return (
     <Section id="about" title="About Me">
-      <div className="flex items-start gap-6 max-w-2xl">
+      <div className="flex items-center gap-6 mb-8">
         <img
           src={profile_image}
           alt="Airhood"
-          className="w-16 h-16 rounded-card flex-shrink-0"
+          className="w-24 h-24 rounded-2xl flex-shrink-0"
         />
-        <div>
-          <p className="text-lg text-text leading-relaxed mb-3">
-            Hello, I'm Airhood!
-          </p>
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1 font-signal text-xs text-muted">
-            {stats.map((stat, i) => (
-              <React.Fragment key={stat.label}>
-                {i > 0 && <span className="text-line">·</span>}
-                <span>
-                  <span className="text-signal font-semibold">{stat.value}</span> {stat.label}
-                </span>
-              </React.Fragment>
-            ))}
+        <p className="font-display text-2xl md:text-3xl font-extrabold text-text">
+          Hello, I'm Airhood!
+        </p>
+      </div>
+
+      <div className="grid sm:grid-cols-2 gap-4 max-w-2xl">
+        {stats.map((stat) => (
+          <div key={stat.label} className="bg-surface rounded-card p-6">
+            <p className="font-display text-3xl md:text-4xl font-black tracking-tight text-text mb-2">{stat.value}</p>
+            <p className="text-base text-muted">{stat.label}</p>
           </div>
-        </div>
+        ))}
       </div>
     </Section>
   );

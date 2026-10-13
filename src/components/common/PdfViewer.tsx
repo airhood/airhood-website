@@ -22,14 +22,14 @@ const PdfViewer: React.FC<Props> = ({ file }) => {
   return (
     <div
       ref={containerRef}
-      className="flex flex-col items-center gap-4 bg-surface rounded-card py-8 px-4"
+      className="flex flex-col items-center"
     >
       <Document
         file={file}
         onLoadSuccess={({ numPages }) => {
           setNumPages(numPages);
           if (containerRef.current) {
-            setWidth(Math.min(containerRef.current.clientWidth - 32, 900));
+            setWidth(Math.min(containerRef.current.clientWidth, 900));
           }
         }}
         loading={<p className="text-sm text-muted py-16">불러오는 중...</p>}
@@ -44,7 +44,7 @@ const PdfViewer: React.FC<Props> = ({ file }) => {
               width={width}
               renderTextLayer
               renderAnnotationLayer={false}
-              className="[&>canvas]:rounded [&>canvas]:shadow-lg"
+              className="rounded-card overflow-hidden"
             />
           ))}
       </Document>

@@ -41,15 +41,16 @@ export const techStacks: TechStack[] = [
 // Projects + Studies 통합 — 소프트웨어 프로젝트와 대회/연구 출품작을 하나로 관리
 export const projects: Project[] = [
   {
-    slug: 'vla-disaster-response',
+    slug: 'vla-drone',
     title: 'VLA 분산 추론 기반 재난대응 로봇팔-드론 시스템',
     organization: 'R&E',
     date: '2026',
     type: 'research',
     description: 'VLA(Vision-Language-Action) 모델을 로봇팔과 드론에 분산 추론시켜 재난 현장에서 협업 대응이 가능한 로봇팔-드론 시스템 연구',
     tags: ['VLA', 'Robotics', 'Drone', 'Distributed Inference'],
-    pdf: '/reports/vla-disaster-response.pdf',
-    image: '/images/projects/vla-disaster-response.jpg',
+    pdf: '/reports/vla-drone.pdf',
+    viewer: 'slides',
+    image: '/images/projects/vla-drone.jpg',
     featured: true,
     githubUrl: 'https://github.com/airhood/openvla-ivm',
   },

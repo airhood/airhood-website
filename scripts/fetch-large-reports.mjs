@@ -12,7 +12,7 @@ const LARGE_ASSETS = [
   },
   {
     url: 'https://github.com/airhood/airhood-website/releases/download/reports/VLA.-.pdf',
-    dest: 'public/reports/vla-disaster-response.pdf',
+    dest: 'public/reports/vla-drone.pdf',
   },
 ];
 

@@ -3,9 +3,11 @@ import { Link, useParams } from 'react-router-dom';
 import { HiArrowLeft } from 'react-icons/hi';
 import { FaGithub, FaExternalLinkAlt, FaFilePdf } from 'react-icons/fa';
 import ProjectIcon from '../components/common/ProjectIcon.tsx';
+import GithubCard from '../components/common/GithubCard.tsx';
 import { projects } from '../data/index.ts';
 
 const PdfViewer = lazy(() => import('../components/common/PdfViewer.tsx'));
+const SlideViewer = lazy(() => import('../components/common/SlideViewer.tsx'));
 
 const ProjectDetail: React.FC = () => {
   const { slug } = useParams();
@@ -24,6 +26,8 @@ const ProjectDetail: React.FC = () => {
 
   const year = project.date?.slice(0, 4);
 
+  const githubOnly = !!project.githubUrl && !project.liveUrl && !project.pdf && !project.poster && !project.sections && !project.demo;
+
   return (
     <div className="max-w-content mx-auto px-6 sm:px-10 md:px-16 lg:px-24 py-32">
       <Link to="/projects" className="inline-flex items-center gap-1.5 mb-8 font-signal text-xs text-muted hover:text-text transition-colors">
@@ -40,7 +44,7 @@ const ProjectDetail: React.FC = () => {
       </div>
 
       <div className="flex items-start justify-between gap-4 flex-wrap mb-3">
-        <h1 className="font-display text-3xl md:text-5xl font-black tracking-tight text-text leading-tight max-w-4xl text-balance">
+        <h1 className="font-display text-3xl md:text-5xl font-black tracking-tight text-text leading-tight">
           {project.title}
         </h1>
         {project.date && (
@@ -63,7 +67,10 @@ const ProjectDetail: React.FC = () => {
         ))}
       </div>
 
-      {(project.githubUrl || project.liveUrl) && (
+      {/* GitHub 링크가 전부인 프로젝트는 작은 버튼 대신 저장소 카드로 강조 */}
+      {githubOnly && project.githubUrl && <GithubCard url={project.githubUrl} />}
+
+      {!githubOnly && (project.githubUrl || project.liveUrl) && (
         <div className="flex flex-wrap items-center gap-3 mb-14">
           {project.githubUrl && (
             <a
@@ -179,7 +186,7 @@ const ProjectDetail: React.FC = () => {
         <Suspense fallback={<p className="text-sm text-muted py-16">불러오는 중...</p>}>
           <div className="flex flex-col gap-8">
             {(Array.isArray(project.pdf) ? project.pdf : [project.pdf]).map((file) => (
-              <PdfViewer key={file} file={file} />
+              project.viewer === 'slides' ? <SlideViewer key={file} file={file} /> : <PdfViewer key={file} file={file} />
             ))}
           </div>
         </Suspense>
