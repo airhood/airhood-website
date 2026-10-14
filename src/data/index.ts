@@ -49,7 +49,7 @@ export const projects: Project[] = [
     description: 'VLA(Vision-Language-Action) 모델을 로봇팔과 드론에 분산 추론시켜 재난 현장에서 협업 대응이 가능한 로봇팔-드론 시스템 연구',
     tags: ['VLA', 'Robotics', 'Drone', 'Distributed Inference'],
     pdf: '/reports/vla-drone.pdf',
-    viewer: 'slides',
+    slides: ['/reports/vla-drone.pdf'],
     image: '/images/projects/vla-drone.jpg',
     featured: true,
     githubUrl: 'https://github.com/airhood/openvla-ivm',
@@ -193,6 +193,7 @@ export const projects: Project[] = [
     type: 'research',
     description: '그래프 이론과 밀도범함수 이론(DFT) 양자화학 계산을 결합해, 주어진 분자식으로부터 가능한 모든 구조 이성질체를 체계적으로 생성하고 안정성을 정량적으로 평가하는 알고리즘 개발',
     tags: ['Chemistry', 'Graph Theory', 'DFT'],
+    code: { name: 'SISA.py', language: 'python', src: '/code/sisa.py' },
     pdf: '/reports/isomer-stability-algorithm.pdf',
   },
   {
@@ -204,6 +205,7 @@ export const projects: Project[] = [
     description: '병원 수용 거부와 이송 지연 문제를 해결하기 위해, 환자의 중증도·병원 가용성·거리를 함께 고려한 스케줄링 알고리즘으로 구급차 경로와 이송 병원을 최적화하는 연구',
     tags: ['Optimization', 'Scheduling', 'Healthcare'],
     pdf: ['/reports/ambulance-routing-report.pdf', '/reports/ambulance-routing-optimization.pdf'],
+    slides: ['/reports/ambulance-routing-optimization.pdf'],
   },
   {
     slug: 'el-nino-la-nina-prediction',

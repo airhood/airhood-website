@@ -36,10 +36,10 @@ const Contact: React.FC = () => {
               {c.icon}
             </div>
             <div className="min-w-0 flex-1">
-              <p className="font-signal text-xs text-muted mb-0.5">
+              <p className="text-base text-muted mb-1">
                 {c.label}
               </p>
-              <p className="text-sm font-semibold text-text truncate">
+              <p className="text-lg font-semibold text-text truncate">
                 {c.value}
               </p>
             </div>
@@ -49,9 +49,9 @@ const Contact: React.FC = () => {
               aria-label={`Copy ${c.label} email`}
             >
               {copied === c.label ? (
-                <MdCheck size={17} className="text-signal" />
+                <MdCheck size={20} className="text-signal" />
               ) : (
-                <MdContentCopy size={17} />
+                <MdContentCopy size={20} />
               )}
             </button>
           </div>

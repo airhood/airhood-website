@@ -29,7 +29,7 @@ export interface Project {
   liveUrl?: string;
   pdf?: string | string[];
   code?: { name: string; language: string; src: string }; // 소스코드 뷰어 (IDE 느낌)
-  viewer?: 'slides';   // PPT 자료는 한 장씩 가로로 넘겨 보기 (기본은 세로 연속 스크롤)
+  slides?: string[];   // pdf 중 PPT 자료인 파일 — 한 장씩 넘겨 보기 (나머지는 세로 연속 스크롤)
   highlights?: { value: string; label: string }[]; // 상세 상단 핵심 수치
   sections?: { title: string; body: string[] }[];  // 상세 본문 (동기/내용/결과 등)
   poster?: { image: string; pdf: string }; // 상세 상단에 이미지로 노출, 클릭하면 PDF

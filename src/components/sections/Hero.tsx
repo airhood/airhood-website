@@ -45,7 +45,7 @@ const Hero: React.FC<HeroProps> = ({ socialLinks }) => {
           Airhood
         </motion.h1>
 
-        <motion.p variants={item} className="text-lg text-muted max-w-md mb-10 leading-relaxed">
+        <motion.p variants={item} className="text-xl text-muted max-w-lg mb-10 leading-relaxed">
           Developer passionate about{' '}
           <span className="text-text font-semibold">AI</span>,{' '}
           <span className="text-text font-semibold">Robotics</span>,{' '}

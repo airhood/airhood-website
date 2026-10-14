@@ -1,8 +1,7 @@
 import React from 'react';
-import { FaGithub, FaCode, FaStar, FaUsers } from 'react-icons/fa';
-import { GoRepoForked } from 'react-icons/go';
+import { FaGithub } from 'react-icons/fa';
 import Section from '../common/Section.tsx';
-import { useGitHubStats } from '../../hooks/useGitHubStats.ts';
+import { useGitHubStats, ContributionDay } from '../../hooks/useGitHubStats.ts';
 
 // GitHub 언어 색상 팔레트
 const LANG_COLORS: Record<string, string> = {
@@ -34,48 +33,96 @@ const Skeleton: React.FC<{ className?: string; style?: React.CSSProperties }> = 
 
 // ── 통계 카드 ─────────────────────────────────────────────────────────────────
 interface StatCardProps {
-  icon: React.ReactNode;
   label: string;
   value: number | string;
   loading: boolean;
 }
 
-const StatCard: React.FC<StatCardProps> = ({ icon, label, value, loading }) => (
-  <div className="bg-surface rounded-card p-5 flex flex-col gap-2">
-    <div className="text-muted text-lg">{icon}</div>
+const StatCard: React.FC<StatCardProps> = ({ label, value, loading }) => (
+  <div className="bg-surface rounded-card p-6 flex flex-col gap-2">
     {loading ? (
       <>
-        <Skeleton className="h-8 w-16" />
-        <Skeleton className="h-3.5 w-20" />
+        <Skeleton className="h-9 w-20" />
+        <Skeleton className="h-4 w-32" />
       </>
     ) : (
       <>
-        <span className="font-display text-2xl font-extrabold text-text leading-none">{value}</span>
-        <span className="text-xs text-muted font-medium">{label}</span>
+        <span className="font-display text-3xl md:text-4xl font-black tracking-tight text-text leading-none">{value}</span>
+        <span className="text-base text-muted">{label}</span>
       </>
     )}
   </div>
 );
 
+// ── 기여 기록(잔디) ───────────────────────────────────────────────────────────
+// 첫 날의 요일만큼 앞을 비워서 열(주) 단위로 맞춘다
+const LEVEL_OPACITY = [0, 0.3, 0.5, 0.75, 1];
+
+const Heatmap: React.FC<{ days: ContributionDay[] }> = ({ days }) => {
+  const firstDow = new Date(`${days[0].date}T00:00:00Z`).getUTCDay();
+  const cells: (ContributionDay | null)[] = [...Array(firstDow).fill(null), ...days];
+  const weeks = Math.ceil(cells.length / 7);
+
+  return (
+    <div
+      className="grid grid-flow-col grid-rows-7 gap-1"
+      style={{ gridTemplateColumns: `repeat(${weeks}, minmax(0, 1fr))` }}
+    >
+      {cells.map((d, i) =>
+        d ? (
+          <div
+            key={d.date}
+            title={`${d.date} · ${d.count}건`}
+            className="aspect-square rounded-sm bg-surface-2 relative overflow-hidden"
+          >
+            {d.level > 0 && (
+              <div
+                className="absolute inset-0"
+                style={{ backgroundColor: 'var(--signal)', opacity: LEVEL_OPACITY[Math.min(d.level, 4)] }}
+              />
+            )}
+          </div>
+        ) : (
+          <div key={`pad-${i}`} />
+        )
+      )}
+    </div>
+  );
+};
+
 // ── 메인 컴포넌트 ─────────────────────────────────────────────────────────────
 const GitHubStats: React.FC = () => {
   const stats = useGitHubStats();
+  const maxPercent = Math.max(1, ...stats.topLanguages.map((l) => l.percent)); // 가장 많은 언어를 막대 100%로
 
   return (
     <Section id="github" title="GitHub Stats">
-      {/* 통계 카드 4개 */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-        <StatCard icon={<GoRepoForked />} label="Repositories" value={stats.publicRepos} loading={stats.loading} />
-        <StatCard icon={<FaStar />}       label="Total Stars"   value={stats.totalStars}  loading={stats.loading} />
-        <StatCard icon={<FaUsers />}      label="Followers"     value={stats.followers}   loading={stats.loading} />
-        <StatCard icon={<FaCode />}       label="Following"     value={stats.following}   loading={stats.loading} />
+      {/* 핵심 수치 — 최근 1년 기여와 활동한 날은 기여 기록을 받아 왔을 때만 */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
+        {(stats.loading || stats.contributions) && (
+          <>
+            <StatCard label="최근 1년 기여" value={stats.contributions?.total ?? 0} loading={stats.loading} />
+            <StatCard label="최근 1년 중 활동한 날" value={stats.contributions ? `${stats.contributions.activeDays}일` : 0} loading={stats.loading} />
+          </>
+        )}
+        <StatCard label="공개 저장소" value={stats.publicRepos} loading={stats.loading} />
       </div>
+
+      {/* 기여 기록 */}
+      {(stats.loading || stats.contributions) && (
+        <div className="bg-surface rounded-card p-6 mb-4">
+          <p className="text-base text-muted mb-5">최근 1년 활동</p>
+          {stats.loading || !stats.contributions ? (
+            <Skeleton className="h-40 w-full" />
+          ) : (
+            <Heatmap days={stats.contributions.days} />
+          )}
+        </div>
+      )}
 
       {/* 언어 통계 */}
       <div className="bg-surface rounded-card p-6">
-        <h3 className="font-signal text-xs text-muted uppercase tracking-widest mb-6">
-          Top Languages
-        </h3>
+        <h3 className="text-base text-muted mb-6">Top Languages</h3>
 
         {stats.loading ? (
           <div className="flex flex-col gap-4">
@@ -104,19 +151,19 @@ const GitHubStats: React.FC = () => {
                       className="w-2.5 h-2.5 rounded-full flex-shrink-0"
                       style={{ backgroundColor: color }}
                     />
-                    <span className="text-sm font-medium text-text truncate">
+                    <span className="text-base font-medium text-text truncate">
                       {lang.name}
                     </span>
                   </div>
 
-                  <div className="flex-1 h-2 bg-surface-2 rounded-full overflow-hidden">
+                  <div className="flex-1 h-3 bg-surface-2 rounded-full overflow-hidden">
                     <div
                       className="h-full rounded-full"
-                      style={{ width: `${lang.percent}%`, backgroundColor: color }}
+                      style={{ width: `${(lang.percent / maxPercent) * 100}%`, backgroundColor: color }}
                     />
                   </div>
 
-                  <span className="font-signal text-xs text-muted w-10 text-right flex-shrink-0">
+                  <span className="font-signal text-sm text-muted w-12 text-right flex-shrink-0">
                     {lang.percent}%
                   </span>
                 </div>

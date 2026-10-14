@@ -193,7 +193,7 @@ const ProjectDetail: React.FC = () => {
         <Suspense fallback={<p className="text-sm text-muted py-16">불러오는 중...</p>}>
           <div className="flex flex-col gap-8">
             {(Array.isArray(project.pdf) ? project.pdf : [project.pdf]).map((file) => (
-              project.viewer === 'slides' ? <SlideViewer key={file} file={file} /> : <PdfViewer key={file} file={file} />
+              project.slides?.includes(file) ? <SlideViewer key={file} file={file} /> : <PdfViewer key={file} file={file} />
             ))}
           </div>
         </Suspense>

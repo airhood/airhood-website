@@ -16,10 +16,10 @@ const Goals: React.FC<Props> = ({ goals }) => {
             className="group bg-surface rounded-card p-6 hover:bg-surface-2 transition-colors duration-200"
           >
             <goal.icon size={26} className="mb-4 text-signal" />
-            <h3 className="font-bold text-text mb-2 group-hover:text-signal transition-colors duration-200">
+            <h3 className="font-display text-xl font-extrabold text-text mb-2 group-hover:text-signal transition-colors duration-200">
               {goal.title}
             </h3>
-            <p className="text-sm text-muted leading-relaxed">
+            <p className="font-ko text-base text-muted leading-relaxed">
               {goal.description}
             </p>
           </div>

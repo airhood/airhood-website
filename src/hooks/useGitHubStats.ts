@@ -6,12 +6,25 @@ export interface LanguageStat {
   percent: number;
 }
 
+export interface ContributionDay {
+  date: string;
+  count: number;
+  level: number; // 0~4
+}
+
+export interface Contributions {
+  total: number;      // 최근 1년 기여 수
+  activeDays: number; // 최근 1년 중 기여가 있었던 날
+  days: ContributionDay[];
+}
+
 export interface GitHubStats {
   publicRepos: number;
   totalStars: number;
   followers: number;
   following: number;
   topLanguages: LanguageStat[];
+  contributions: Contributions | null; // 공개 서비스에서 받아 오므로 실패하면 null
   loading: boolean;
   error: boolean;
 }
@@ -19,7 +32,7 @@ export interface GitHubStats {
 type CachedStats = Omit<GitHubStats, 'loading' | 'error'>;
 
 const USERNAME = 'Airhood';
-const CACHE_KEY = `github-stats:${USERNAME}:v2`; // v2 — 언어 계산 방식을 레포 개수 기준으로 되돌리며 캐시 무효화
+const CACHE_KEY = `github-stats:${USERNAME}:v3`; // v3 — 기여 기록 추가로 캐시 무효화
 const CACHE_TTL_MS = 60 * 60 * 1000; // 1시간 — API 요청 한도(비로그인 시간당 60회) 방지
 
 function readCache(): CachedStats | null {
@@ -51,6 +64,7 @@ export function useGitHubStats(): GitHubStats {
     followers: cached?.followers ?? 0,
     following: cached?.following ?? 0,
     topLanguages: cached?.topLanguages ?? [],
+    contributions: cached?.contributions ?? null,
     loading: !cached,
     error: false,
   });
@@ -61,9 +75,11 @@ export function useGitHubStats(): GitHubStats {
 
     async function fetchStats() {
       try {
-        const [userRes, reposRes] = await Promise.all([
+        const [userRes, reposRes, contribRes] = await Promise.all([
           fetch(`https://api.github.com/users/${USERNAME}`),
           fetch(`https://api.github.com/users/${USERNAME}/repos?per_page=100&type=owner`),
+          // GitHub 기본 API에는 기여 기록이 없어서 공개 서비스(jogruber)를 쓴다 — 실패해도 나머지는 보여 준다
+          fetch(`https://github-contributions-api.jogruber.de/v4/${USERNAME}?y=last`).catch(() => null),
         ]);
 
         if (!userRes.ok || !reposRes.ok) throw new Error('API error');
@@ -93,12 +109,28 @@ export function useGitHubStats(): GitHubStats {
             percent: total > 0 ? Math.round((count / total) * 100) : 0,
           }));
 
+        let contributions: Contributions | null = null;
+        try {
+          if (contribRes && contribRes.ok) {
+            const c = await contribRes.json();
+            const days: ContributionDay[] = c.contributions ?? [];
+            contributions = {
+              total: c.total?.lastYear ?? days.reduce((sum, d) => sum + d.count, 0),
+              activeDays: days.filter((d) => d.count > 0).length,
+              days,
+            };
+          }
+        } catch {
+          contributions = null;
+        }
+
         const data: CachedStats = {
           publicRepos: user.public_repos,
           totalStars,
           followers: user.followers,
           following: user.following,
           topLanguages,
+          contributions,
         };
 
         if (!cancelled) {
