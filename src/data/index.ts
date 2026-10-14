@@ -204,8 +204,9 @@ export const projects: Project[] = [
     type: 'research',
     description: '병원 수용 거부와 이송 지연 문제를 해결하기 위해, 환자의 중증도·병원 가용성·거리를 함께 고려한 스케줄링 알고리즘으로 구급차 경로와 이송 병원을 최적화하는 연구',
     tags: ['Optimization', 'Scheduling', 'Healthcare'],
-    pdf: ['/reports/ambulance-routing-report.pdf', '/reports/ambulance-routing-optimization.pdf'],
+    pdf: ['/reports/ambulance-routing-optimization.pdf', '/reports/ambulance-routing-report.pdf'],
     slides: ['/reports/ambulance-routing-optimization.pdf'],
+    image: '/images/projects/ambulance-routing-optimization.jpg',
   },
   {
     slug: 'el-nino-la-nina-prediction',
@@ -214,6 +215,7 @@ export const projects: Project[] = [
     type: 'research',
     description: 'ONI, MEI 등 다변량 기후 지표를 활용해 LSTM·Attention 기반 시계열 모델로 엘니뇨·라니냐 발생을 예측하는 탐구',
     tags: ['Deep Learning', 'LSTM', 'Climate', 'Time Series'],
+    image: '/images/projects/el-nino-la-nina-prediction.jpg',
     pdf: '/reports/el-nino-la-nina-prediction.pdf',
   },
   {

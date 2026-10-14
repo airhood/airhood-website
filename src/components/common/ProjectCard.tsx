@@ -8,7 +8,7 @@ const ProjectCard: React.FC<{ project: Project; className?: string }> = ({ proje
     to={`/projects/${project.slug}`}
     className={`group flex flex-col ${className}`}
   >
-    <div className="relative aspect-[16/11] rounded-2xl overflow-hidden bg-surface-2 transition-colors duration-300">
+    <div className="relative aspect-video rounded-2xl overflow-hidden bg-surface-2 transition-colors duration-300">
       {project.image ? (
         <img
           src={project.image}
