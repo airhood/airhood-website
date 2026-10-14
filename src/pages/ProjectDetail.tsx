@@ -1,7 +1,7 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { HiArrowLeft } from 'react-icons/hi';
-import { FaGithub, FaExternalLinkAlt, FaFilePdf } from 'react-icons/fa';
+import { FaGithub, FaExternalLinkAlt, FaFilePdf, FaPlay } from 'react-icons/fa';
 import ProjectIcon from '../components/common/ProjectIcon.tsx';
 import GithubCard from '../components/common/GithubCard.tsx';
 import { projects } from '../data/index.ts';
@@ -10,8 +10,114 @@ const PdfViewer = lazy(() => import('../components/common/PdfViewer.tsx'));
 const SlideViewer = lazy(() => import('../components/common/SlideViewer.tsx'));
 const CodeViewer = lazy(() => import('../components/common/CodeViewer.tsx'));
 
+/** 소리 없는 짧은 영상 — 화면에 보이면 반복 재생, 벗어나면 멈춤. 누르면 멈춤/재생.
+ *  '동작 줄이기' 설정이면 자동 재생하지 않고 기본 컨트롤을 보여 준다. */
+const LoopVideo: React.FC<{ src: string; poster: string }> = ({ src, poster }) => {
+  const ref = useRef<HTMLVideoElement>(null);
+  const userPaused = useRef(false);
+  const [paused, setPaused] = useState(false);
+  const reduceMotion =
+    typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  useEffect(() => {
+    const v = ref.current;
+    if (!v || reduceMotion) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !userPaused.current) v.play().catch(() => {});
+        else v.pause();
+      },
+      { threshold: 0.5 }
+    );
+    io.observe(v);
+    return () => io.disconnect();
+  }, [reduceMotion]);
+
+  const toggle = () => {
+    const v = ref.current;
+    if (!v) return;
+    if (v.paused) {
+      userPaused.current = false;
+      v.play().catch(() => {});
+    } else {
+      userPaused.current = true;
+      v.pause();
+    }
+  };
+
+  return (
+    <div className="relative">
+      <video
+        ref={ref}
+        src={src}
+        poster={poster}
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        controls={reduceMotion}
+        onPlay={() => setPaused(false)}
+        onPause={() => setPaused(userPaused.current)}
+        onClick={reduceMotion ? undefined : toggle}
+        className={`w-full aspect-[4/3] object-cover rounded-card bg-surface ${reduceMotion ? '' : 'cursor-pointer'}`}
+      />
+      {paused && !reduceMotion && (
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <span className="w-14 h-14 rounded-full bg-black/55 flex items-center justify-center text-white">
+            <FaPlay size={18} className="ml-0.5" />
+          </span>
+        </div>
+      )}
+    </div>
+  );
+};
+
+/** 사진을 누르면 크게 보여 주는 확대 보기 — 사진 속 글씨와 설계도의 치수를 읽을 수 있게 */
+const Lightbox: React.FC<{
+  items: { src: string; caption: string }[];
+  index: number;
+  onClose: () => void;
+  onMove: (i: number) => void;
+}> = ({ items, index, onClose, onMove }) => {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowRight') onMove((index + 1) % items.length);
+      if (e.key === 'ArrowLeft') onMove((index - 1 + items.length) % items.length);
+    };
+    window.addEventListener('keydown', onKey);
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = '';
+    };
+  }, [index, items.length, onClose, onMove]);
+
+  const item = items[index];
+  return (
+    <div
+      className="fixed inset-0 z-50 bg-black/90 flex flex-col items-center justify-center p-6 cursor-zoom-out"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={item.caption}
+    >
+      <img
+        src={item.src}
+        alt={item.caption}
+        className="max-w-full max-h-[80vh] object-contain rounded-card bg-white"
+        onClick={(e) => e.stopPropagation()}
+      />
+      <p className="font-ko text-base text-white/80 mt-4" onClick={(e) => e.stopPropagation()}>
+        {item.caption} <span className="text-white/50 tabular-nums ml-2">{index + 1} / {items.length}</span>
+      </p>
+    </div>
+  );
+};
+
 const ProjectDetail: React.FC = () => {
   const { slug } = useParams();
+  const [zoomed, setZoomed] = useState<number | null>(null);
   const project = projects.find((p) => p.slug === slug);
 
   if (!project) {
@@ -148,6 +254,57 @@ const ProjectDetail: React.FC = () => {
             </section>
           ))}
         </div>
+      )}
+
+      {project.videos && (
+        <section className="grid md:grid-cols-[14rem_1fr] gap-4 md:gap-12 mb-12">
+          <h2 className="font-display text-xl font-extrabold text-text">실험 영상</h2>
+          <div className="grid sm:grid-cols-2 gap-4">
+            {project.videos.map((v) => (
+              <figure key={v.src}>
+                <LoopVideo src={v.src} poster={v.poster} />
+                <figcaption className="font-ko text-base text-muted mt-3">{v.caption}</figcaption>
+              </figure>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {project.gallery && (
+        <section className="grid md:grid-cols-[14rem_1fr] gap-4 md:gap-12 mb-16">
+          <h2 className="font-display text-xl font-extrabold text-text">사진</h2>
+          {/* 같은 줄(row)의 사진은 가로 폭을 사진 비율대로 나눠 높이를 맞춘다 — 상자 여백이 생기지 않는다 */}
+          <div className="flex flex-col gap-6">
+            {Array.from(new Set(project.gallery.map((g) => g.row))).map((row) => {
+              const items = project.gallery!.map((g, i) => ({ g, i })).filter(({ g }) => g.row === row);
+              return (
+                <div
+                  key={row}
+                  className="grid gap-4"
+                  style={{ gridTemplateColumns: items.map(({ g }) => `minmax(0, ${g.aspect}fr)`).join(' ') }}
+                >
+                  {items.map(({ g, i }) => (
+                    <figure key={g.src}>
+                      <button
+                        type="button"
+                        onClick={() => setZoomed(i)}
+                        aria-label={`${g.caption} 크게 보기`}
+                        className="block w-full rounded-card overflow-hidden cursor-zoom-in hover:opacity-90 transition-opacity"
+                      >
+                        <img src={g.src} alt={g.caption} loading="lazy" className="w-full h-auto block" />
+                      </button>
+                      <figcaption className="font-ko text-base text-muted mt-3">{g.caption}</figcaption>
+                    </figure>
+                  ))}
+                </div>
+              );
+            })}
+          </div>
+        </section>
+      )}
+
+      {project.gallery && zoomed !== null && (
+        <Lightbox items={project.gallery} index={zoomed} onClose={() => setZoomed(null)} onMove={setZoomed} />
       )}
 
       {project.demo && (

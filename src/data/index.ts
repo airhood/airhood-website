@@ -231,7 +231,7 @@ export const projects: Project[] = [
     organization: '전국학생발명품경진대회',
     date: '2025',
     description: '정수기 뜨거운 물 취수 중 발생할 수 있는 물 튐으로 인한 사고를 예방하기 위한 안전 정수기 코크',
-    tags: ['Invention'],
+    tags: ['Invention', 'Fluid Dynamics', '3D Printing', 'Simulation'],
     image: '/images/projects/water-purifier-cock.jpg',
     poster: {
       image: '/images/projects/water-purifier-cock-poster.jpg',
@@ -290,6 +290,27 @@ export const projects: Project[] = [
           '창의성: 코크 내부에 창의적인 기하학 구조를 적용한 아이디어 모델입니다.',
         ],
       },
+    ],
+    videos: [
+      {
+        src: '/videos/water-purifier-cock/no-cock.mp4',
+        poster: '/videos/water-purifier-cock/no-cock.jpg',
+        caption: '코크 없음 — 물줄기가 떨어지며 물이 튀는 모습',
+      },
+      {
+        src: '/videos/water-purifier-cock/simulation.mp4',
+        poster: '/videos/water-purifier-cock/simulation.jpg',
+        caption: '시뮬레이션 — 경사면을 따라 물이 흐르는 모습',
+      },
+    ],
+    gallery: [
+      { src: '/images/water-purifier-cock/first-drop-fixed.jpg', caption: '첫 방울 — 크라운 스플래시의 원인', aspect: 1.276, row: 0 },
+      { src: '/images/water-purifier-cock/analysis.jpg', caption: '물 튐 분석 — 크라운 스플래시', aspect: 0.907, row: 0 },
+      { src: '/images/water-purifier-cock/design-1.jpg', caption: '1차 작품 설계도', aspect: 1.328, row: 1 },
+      { src: '/images/water-purifier-cock/proto-7-bottom.jpg', caption: '프로토타입 7 바닥면', aspect: 1.192, row: 1 },
+      { src: '/images/water-purifier-cock/section.jpg', caption: '스플래시제로 프로 단면도', aspect: 1.155, row: 2 },
+      { src: '/images/water-purifier-cock/proto-13a-section.jpg', caption: '프로토타입 13 (A) 단면 — 빗면 1개', aspect: 0.683, row: 2 },
+      { src: '/images/water-purifier-cock/proto-13g.jpg', caption: '프로토타입 13 (G) 내부 구조 — 빗면 2개', aspect: 0.483, row: 2 },
     ],
   },
   {

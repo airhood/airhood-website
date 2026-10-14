@@ -32,6 +32,8 @@ export interface Project {
   slides?: string[];   // pdf 중 PPT 자료인 파일 — 한 장씩 넘겨 보기 (나머지는 세로 연속 스크롤)
   highlights?: { value: string; label: string }[]; // 상세 상단 핵심 수치
   sections?: { title: string; body: string[] }[];  // 상세 본문 (동기/내용/결과 등)
+  videos?: { src: string; poster: string; caption: string }[]; // 상세 본문 아래 실험 영상
+  gallery?: { src: string; caption: string; aspect: number; row: number }[]; // 상세 본문 아래 사진 (row = 같은 줄, aspect = 가로/세로 — 한 줄의 높이를 맞추는 데 씀)
   poster?: { image: string; pdf: string }; // 상세 상단에 이미지로 노출, 클릭하면 PDF
   demo?: { title: string; description: string; image: string; url: string }; // 상세 하단 '직접 해보기' 카드
   image?: string;      // 홈 카드 대표 이미지 (public 기준 경로)
