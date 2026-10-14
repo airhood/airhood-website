@@ -27,10 +27,12 @@ export interface Project {
   type?: 'competition' | 'research';
   githubUrl?: string;
   liveUrl?: string;
+  blogUrl?: string;    // 개발 블로그 링크 ('Blog' 버튼)
   pdf?: string | string[];
   code?: { name: string; language: string; src: string }; // 소스코드 뷰어 (IDE 느낌)
   slides?: string[];   // pdf 중 PPT 자료인 파일 — 한 장씩 넘겨 보기 (나머지는 세로 연속 스크롤)
   highlights?: { value: string; label: string }[]; // 상세 상단 핵심 수치
+  essay?: string[];   // 글(에세이) 본문 — 문단 배열, 상세 페이지에 본문으로 직접 노출
   sections?: { title: string; body: string[] }[];  // 상세 본문 (동기/내용/결과 등)
   videos?: { src: string; poster: string; caption: string }[]; // 상세 본문 아래 실험 영상
   gallery?: { src: string; caption: string; aspect: number; row: number }[]; // 상세 본문 아래 사진 (row = 같은 줄, aspect = 가로/세로 — 한 줄의 높이를 맞추는 데 씀)

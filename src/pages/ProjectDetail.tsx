@@ -177,6 +177,20 @@ const ProjectDetail: React.FC = () => {
       {/* GitHub 링크가 전부인 프로젝트는 작은 버튼 대신 저장소 카드로 강조 */}
       {githubOnly && project.githubUrl && <GithubCard url={project.githubUrl} />}
 
+      {project.blogUrl && (
+        <div className="flex flex-wrap items-center gap-3 mb-14">
+          <a
+            href={project.blogUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-card bg-surface-2 text-base text-text hover:text-signal transition-colors"
+          >
+            <FaExternalLinkAlt size={14} />
+            <span>Blog</span>
+          </a>
+        </div>
+      )}
+
       {!githubOnly && (project.githubUrl || project.liveUrl) && (
         <div className="flex flex-wrap items-center gap-3 mb-14">
           {project.githubUrl && (
@@ -204,7 +218,7 @@ const ProjectDetail: React.FC = () => {
         </div>
       )}
 
-      {project.poster && !project.highlights && (
+      {project.poster && !project.highlights && !project.essay && (
         <a
           href={project.poster.pdf}
           target="_blank"
@@ -215,7 +229,7 @@ const ProjectDetail: React.FC = () => {
         </a>
       )}
 
-      {project.highlights && (
+      {project.highlights && !project.essay && (
         <div className="grid md:grid-cols-[minmax(0,7fr)_minmax(0,4fr)] gap-8 items-start mb-24">
           {project.poster && (
             <a
@@ -237,6 +251,33 @@ const ProjectDetail: React.FC = () => {
                 </div>
               ))}
             </div>
+          )}
+        </div>
+      )}
+
+      {project.essay && (
+        <div className="grid md:grid-cols-[minmax(0,7fr)_minmax(0,4fr)] gap-12 items-start mb-20">
+          <article className="flex flex-col gap-7">
+            {project.essay.map((para, i) => (
+              <p
+                key={i}
+                className="font-ko leading-9 text-justify text-lg text-text"
+              >
+                {para}
+              </p>
+            ))}
+          </article>
+
+          {/* 글을 읽는 동안 대회 포스터가 옆에 남도록 고정 */}
+          {project.poster && (
+            <a
+              href={project.poster.pdf}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block rounded-card overflow-hidden hover:opacity-90 transition-opacity md:sticky md:top-24"
+            >
+              <img src={project.poster.image} alt={`${project.title} poster`} className="w-full h-auto block" />
+            </a>
           )}
         </div>
       )}
