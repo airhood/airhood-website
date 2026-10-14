@@ -3,28 +3,8 @@ import { FaGithub } from 'react-icons/fa';
 import Section from '../common/Section.tsx';
 import { useGitHubStats, ContributionDay } from '../../hooks/useGitHubStats.ts';
 
-// GitHub 언어 색상 팔레트
-const LANG_COLORS: Record<string, string> = {
-  'C#':           '#178600',
-  'C++':          '#f34b7d',
-  'C':            '#555555',
-  'JavaScript':   '#f1e05a',
-  'TypeScript':   '#3178c6',
-  'Python':       '#3572A5',
-  'Java':         '#b07219',
-  'Go':           '#00ADD8',
-  'Rust':         '#dea584',
-  'Dart':         '#00B4AB',
-  'Kotlin':       '#A97BFF',
-  'Swift':        '#F05138',
-  'Shell':        '#89e051',
-  'HTML':         '#e34c26',
-  'CSS':          '#563d7c',
-  'Lua':          '#000080',
-  'Ruby':         '#701516',
-};
-
-const DEFAULT_COLOR = '#8b8f99';
+// 순위(0=가장 많음)별 주황 농도 — 1.0 → 0.3
+const shade = (i: number, n: number) => (n <= 1 ? 1 : 1 - (0.7 * i) / (n - 1));
 
 // ── 스켈레톤 ──────────────────────────────────────────────────────────────────
 const Skeleton: React.FC<{ className?: string; style?: React.CSSProperties }> = ({ className = '', style }) => (
@@ -72,7 +52,7 @@ const Heatmap: React.FC<{ days: ContributionDay[] }> = ({ days }) => {
         d ? (
           <div
             key={d.date}
-            title={`${d.date} · ${d.count}건`}
+            title={`${d.date} · ${d.count} contributions`}
             className="aspect-square rounded-sm bg-surface-2 relative overflow-hidden"
           >
             {d.level > 0 && (
@@ -93,7 +73,6 @@ const Heatmap: React.FC<{ days: ContributionDay[] }> = ({ days }) => {
 // ── 메인 컴포넌트 ─────────────────────────────────────────────────────────────
 const GitHubStats: React.FC = () => {
   const stats = useGitHubStats();
-  const maxPercent = Math.max(1, ...stats.topLanguages.map((l) => l.percent)); // 가장 많은 언어를 막대 100%로
 
   return (
     <Section id="github" title="GitHub Stats">
@@ -101,17 +80,17 @@ const GitHubStats: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-4">
         {(stats.loading || stats.contributions) && (
           <>
-            <StatCard label="최근 1년 기여" value={stats.contributions?.total ?? 0} loading={stats.loading} />
-            <StatCard label="최근 1년 중 활동한 날" value={stats.contributions ? `${stats.contributions.activeDays}일` : 0} loading={stats.loading} />
+            <StatCard label="Contributions in the last year" value={stats.contributions?.total ?? 0} loading={stats.loading} />
+            <StatCard label="Active days in the last year" value={stats.contributions ? stats.contributions.activeDays : 0} loading={stats.loading} />
           </>
         )}
-        <StatCard label="공개 저장소" value={stats.publicRepos} loading={stats.loading} />
+        <StatCard label="Public repositories" value={stats.publicRepos} loading={stats.loading} />
       </div>
 
       {/* 기여 기록 */}
       {(stats.loading || stats.contributions) && (
         <div className="bg-surface rounded-card p-6 mb-4">
-          <p className="text-base text-muted mb-5">최근 1년 활동</p>
+          <p className="text-base text-muted mb-5">Activity in the last year</p>
           {stats.loading || !stats.contributions ? (
             <Skeleton className="h-40 w-full" />
           ) : (
@@ -125,50 +104,43 @@ const GitHubStats: React.FC = () => {
         <h3 className="text-base text-muted mb-6">Top Languages</h3>
 
         {stats.loading ? (
-          <div className="flex flex-col gap-4">
-            {[80, 60, 45, 30, 20].map((w, i) => (
-              <div key={i} className="flex items-center gap-3">
-                <Skeleton className="h-3.5 w-24" />
-                <div className="flex-1 h-2 bg-surface-2 rounded-full">
-                  <Skeleton className={`h-full rounded-full`} style={{ width: `${w}%` } as React.CSSProperties} />
-                </div>
-                <Skeleton className="h-3.5 w-8" />
-              </div>
-            ))}
+          <div>
+            <Skeleton className="h-3 w-full rounded-full mb-6" />
+            <div className="flex flex-wrap gap-x-8 gap-y-3">
+              {[0, 1, 2, 3, 4].map((i) => (
+                <Skeleton key={i} className="h-5 w-24" />
+              ))}
+            </div>
           </div>
         ) : stats.error ? (
           <p className="text-sm text-muted">
-            데이터를 불러올 수 없어요. GitHub API 요청 한도를 초과했을 수 있어요.
+            Could not load GitHub data. The API rate limit may have been exceeded.
           </p>
         ) : (
-          <div className="flex flex-col gap-4">
-            {stats.topLanguages.map((lang) => {
-              const color = LANG_COLORS[lang.name] ?? DEFAULT_COLOR;
-              return (
-                <div key={lang.name} className="flex items-center gap-3">
-                  <div className="flex items-center gap-2 w-32 flex-shrink-0">
-                    <span
-                      className="w-2.5 h-2.5 rounded-full flex-shrink-0"
-                      style={{ backgroundColor: color }}
-                    />
-                    <span className="text-base font-medium text-text truncate">
-                      {lang.name}
-                    </span>
-                  </div>
+          <div>
+            {/* 비율대로 이어 붙인 한 줄 막대 — 순위가 낮을수록 옅게 */}
+            <div className="flex gap-0.5 h-3 mb-6">
+              {stats.topLanguages.map((lang, i) => (
+                <div
+                  key={lang.name}
+                  className="h-full bg-signal first:rounded-l-full last:rounded-r-full"
+                  style={{ flexGrow: lang.percent, flexBasis: 0, opacity: shade(i, stats.topLanguages.length) }}
+                />
+              ))}
+            </div>
 
-                  <div className="flex-1 h-3 bg-surface-2 rounded-full overflow-hidden">
-                    <div
-                      className="h-full rounded-full"
-                      style={{ width: `${(lang.percent / maxPercent) * 100}%`, backgroundColor: color }}
-                    />
-                  </div>
-
-                  <span className="font-signal text-sm text-muted w-12 text-right flex-shrink-0">
-                    {lang.percent}%
-                  </span>
-                </div>
-              );
-            })}
+            <ul className="flex flex-wrap gap-x-8 gap-y-3">
+              {stats.topLanguages.map((lang, i) => (
+                <li key={lang.name} className="flex items-center gap-2">
+                  <span
+                    className="w-2.5 h-2.5 rounded-full bg-signal flex-shrink-0"
+                    style={{ opacity: shade(i, stats.topLanguages.length) }}
+                  />
+                  <span className="text-base font-medium text-text">{lang.name}</span>
+                  <span className="font-signal text-sm text-muted">{lang.percent}%</span>
+                </li>
+              ))}
+            </ul>
           </div>
         )}
       </div>

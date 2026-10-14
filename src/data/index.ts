@@ -368,7 +368,6 @@ export const projects: Project[] = [
     date: '2023',
     description: '',
     tags: ['Essay'],
-    image: '/images/projects/polar-climate-essay.jpg',
     poster: { image: '/images/polar-climate-essay/poster.jpg', pdf: '/images/polar-climate-essay/poster.jpg' },
     essay: [
       "수많은 뉴스와 연구 자료를 통해 누구나 지구 온난화가 급속히 진행되고 있고, 극지의 기후변화는 심각하다는 사실을 알고 있을 것이다. 연구 보고서에 따르면 2011~2020년에 1850~1900년보다 지구 표면 온도가 1.1도 상승했다. 사람들은 기후변화를 다루는 영화를 보고 그저 재미를 느낄 뿐, 기후변화가 실제로 일어날 것이라고 생각하지 않거나, 자신이 사는 지역까지는 영향을 미치지 못한다고 생각하고, 남의 일처럼 여긴다. 또한, 사람들은 나 하나쯤은 괜찮다고 생각하고, 이 정도는 넘어가도 된다고 생각하며 자기합리화를 한다. 이처럼, 사람들은 극지의 기후변화를 심각하게 생각하고 있지 않다. 하지만, 극지의 기후변화는 한반도에 매우 큰 영향을 미친다.",
