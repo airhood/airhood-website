@@ -3,8 +3,9 @@ import { FaGithub } from 'react-icons/fa';
 import Section from '../common/Section.tsx';
 import { useGitHubStats, ContributionDay } from '../../hooks/useGitHubStats.ts';
 
-// 순위(0=가장 많음)별 주황 농도 — 1.0 → 0.3
-const shade = (i: number, n: number) => (n <= 1 ? 1 : 1 - (0.7 * i) / (n - 1));
+// 순위(0=가장 많음)별 파스텔 색 — 첫 색은 사이트 포인트(주황) 계열
+const LANG_PALETTE = ['#FFAF78', '#95E1C9', '#8FC3FF', '#C3A9F9', '#FFE57F', '#FD9EBC'];
+const langColor = (i: number) => LANG_PALETTE[i % LANG_PALETTE.length];
 
 // ── 스켈레톤 ──────────────────────────────────────────────────────────────────
 const Skeleton: React.FC<{ className?: string; style?: React.CSSProperties }> = ({ className = '', style }) => (
@@ -118,13 +119,13 @@ const GitHubStats: React.FC = () => {
           </p>
         ) : (
           <div>
-            {/* 비율대로 이어 붙인 한 줄 막대 — 순위가 낮을수록 옅게 */}
-            <div className="flex gap-0.5 h-3 mb-6">
+            {/* 비율대로 이어 붙인 한 줄 막대 */}
+            <div className="flex gap-0.5 h-4 mb-6">
               {stats.topLanguages.map((lang, i) => (
                 <div
                   key={lang.name}
-                  className="h-full bg-signal first:rounded-l-full last:rounded-r-full"
-                  style={{ flexGrow: lang.percent, flexBasis: 0, opacity: shade(i, stats.topLanguages.length) }}
+                  className="h-full first:rounded-l-full last:rounded-r-full"
+                  style={{ flexGrow: lang.percent, flexBasis: 0, backgroundColor: langColor(i) }}
                 />
               ))}
             </div>
@@ -133,8 +134,8 @@ const GitHubStats: React.FC = () => {
               {stats.topLanguages.map((lang, i) => (
                 <li key={lang.name} className="flex items-center gap-2">
                   <span
-                    className="w-2.5 h-2.5 rounded-full bg-signal flex-shrink-0"
-                    style={{ opacity: shade(i, stats.topLanguages.length) }}
+                    className="w-3 h-3 rounded-full flex-shrink-0"
+                    style={{ backgroundColor: langColor(i) }}
                   />
                   <span className="text-base font-medium text-text">{lang.name}</span>
                   <span className="font-signal text-sm text-muted">{lang.percent}%</span>
