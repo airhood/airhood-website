@@ -420,6 +420,19 @@ export const projects: Project[] = [
     image: '/images/projects/dimo.png',
   },
   {
+    slug: 'number-factory',
+    title: 'Number Factory',
+    date: '2023 ~ 2025',
+    description: '컨베이어 벨트 위로 흐르는 숫자를 사칙연산 등의 블록으로 가공해 목표 숫자를 만드는 퍼즐 게임. 2023년에 개발을 시작해 2025년에 이어서 완성',
+    tags: ['Python', 'Pygame', 'Puzzle'],
+    githubUrl: 'https://github.com/airhood/Factory',
+    image: '/images/projects/number-factory.png',
+    poster: {
+      image: '/images/number-factory/screenshot.png',
+      pdf: '/images/number-factory/screenshot.png',
+    },
+  },
+  {
     slug: 'cubic-engine',
     title: 'Cubic Engine',
     date: '2024 ~ 2025',
