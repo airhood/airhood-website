@@ -152,6 +152,93 @@ export const projects: Project[] = [
     },
   },
   {
+    slug: 'shade-ball-system',
+    title: '표면적 제어형 군집 셰이드볼 시스템 구현 및 수질 변화 탐구',
+    organization: '제3회 융합탐구 321체',
+    date: '2026',
+    type: 'research',
+    description: '셰이드볼의 피복률을 능동적으로 조절해 저수지 환경 변화에 유연하게 대응하는 시스템을 구상하고, 증발 억제와 용존산소 유지 사이의 상충관계를 시뮬레이션으로 분석',
+    tags: ['Water Management', 'Simulation', 'Control', '3D Printing'],
+    image: '/images/projects/shade-ball-system.jpg',
+    pdf: '/reports/shade-ball-system.pdf',
+    poster: {
+      image: '/images/projects/shade-ball-system-poster.jpg',
+      pdf: '/reports/shade-ball-system-poster.pdf',
+    },
+    highlights: [
+      { value: '27.17 → 11.88', label: '5일 날씨 시나리오의 누적 증발량 (mm, 무피복 → 24h 예측 제어)' },
+      { value: '89.3% → 66.3%', label: '머더볼을 내려서 연속적으로 조절한 피복률' },
+      { value: 'DO 6 mg/L 이상', label: '모든 비교군에서 유지된 용존산소' },
+    ],
+    sections: [
+      {
+        title: '탐구 동기',
+        body: [
+          '저수지나 수조와 같은 개방된 수면에서는 햇빛과 높은 기온 등의 영향으로 물의 증발이 지속적으로 발생합니다. 이러한 수분 손실을 줄이기 위해 수면 위에 셰이드볼(Shade Ball)을 띄웁니다. 셰이드볼은 수면 일부를 물리적으로 덮어 태양 복사에너지를 줄이고 물과 대기의 직접적인 접촉을 줄여 수분 증발을 억제하며, 수중으로 유입되는 빛의 양을 줄여 조류의 성장도 억제합니다.',
+          '그러나 수면을 높은 비율로 덮는 것이 항상 긍정적인 효과만을 가져오는 것은 아닙니다. 수면은 대기 중 산소와 물 사이에서 기체 교환이 이루어지는 경계면이라, 셰이드볼이 수면을 넓게 덮으면 산소 교환이 제한되어 용존산소(Dissolved Oxygen, DO)가 감소할 가능성이 있습니다.',
+          '그래서 수분 증발 억제와 수질 유지 사이의 상충관계를 고려해, 상황에 맞게 피복 면적을 조절할 필요가 있다고 판단했습니다.',
+        ],
+      },
+      {
+        title: '교과융합 주안점',
+        body: [
+          '물리: 셰이드볼의 부력·로프 장력 힘 평형을 분석하고, 현수선 방정식으로 그릇 형상 설계식을 도출해 시뮬레이션 결과를 이론값과 대조해 검증합니다.',
+          '화학: 용존산소 변화를 재폭기·광합성·호흡의 반응식으로 구성하고 조류 생체량을 로지스틱 성장방정식으로 재구성해, 피복률과 수질 사이의 상충관계를 정량적으로 분석합니다.',
+          '정보: 저수지 상태를 실시간 판단해 개방률을 결정하는 3단계 층 제어 시스템과 feedforward 제어를 구현해, 물리·화학 모델을 실제 제어 로직으로 전환합니다.',
+          '공학: 셰이드볼·마더볼·수조 및 가이드 통로를 3D 모델링·제작하고 구동부를 외부 도르래 방식으로 설계해 셰이드볼 실험 환경을 구축합니다.',
+        ],
+      },
+      {
+        title: '이론적 배경',
+        body: [
+          '부력-장력 연동: 물에 잠긴 구의 부력은 잠긴 구면 캡의 부피에 비례하며, 로프 장력이 커질수록 셰이드볼의 침수 깊이가 변합니다.',
+          '현수선과 그릇 형상: 완만한 처짐에서는 현수선이 포물선 형태로 근사되며, 이를 로프 길이 설계와 침강 깊이 곡면에 적용합니다.',
+          '다체 접촉 구속조건: 수십 개의 볼이 밀집된 군집에서는 개별 힘 평형뿐 아니라 볼-볼 접촉과 로프 길이 구속을 함께 해석해야 합니다.',
+        ],
+      },
+      {
+        title: '구조물 설계 및 제작',
+        body: [
+          '셰이드볼, 고리형 셰이드볼, 마더볼, 수조 및 연결선 가이드 통로를 3D 모델링하여 출력했고, 구동부를 수조 외부로 옮겨 실로 셰이드볼을 당기는 방식으로 조작을 구현했습니다.',
+          '모든 구조물을 조립한 뒤 실을 당기고 풀었을 때 셰이드볼이 실제로 하강·상승하는지 직접 확인했습니다.',
+        ],
+      },
+      {
+        title: '피복 시뮬레이션',
+        body: [
+          '마더볼의 부력을 제어해 셰이드볼 군집의 수면 개방 면적을 조절할 수 있는가를 확인했습니다. 마더볼을 하강시켜 볼을 잠기게 하는 방식으로 피복률을 89.3%에서 66.3%까지 연속적으로 조절할 수 있었고, 개방 시 오목한 곡선 분포를 가짐을 확인했습니다.',
+          '강체 물리 엔진 기반 정밀 시뮬레이션에서는 인위적인 감쇠 없이도 그릇 형상 추종 오차가 평균 1.95mm에 그쳐 설계식이 물리적으로 타당함을 확인했습니다.',
+        ],
+      },
+      {
+        title: '피복률 제어기',
+        body: [
+          'Layer 1 - 예측 계획(MPC): 24시간 예보를 6시간마다 재계획합니다.',
+          'Layer 2 - 피드백 트림(PI): 실측값과 예측값의 오차를 보정합니다.',
+          'Layer 3 - 안전장치: DO가 위험수준에 도달하면 수면을 최대로 개방합니다.',
+        ],
+      },
+      {
+        title: '비교 시뮬레이션',
+        body: [
+          '모든 비교군에서 최대 수온 25.45℃ 이하, DO 6 mg/L 이상이 유지됐습니다. 24h 예측 제어는 무피복·고정 피복 대비 증발·조류 억제 성능과 DO 안전 여유를 확보했고, 규칙 기반 제어 대비 불필요한 구동을 줄였습니다.',
+          '용존산소 위험 신호에 대응해 제어기가 실제로 피복률을 조정하는 폐루프가 의도한 대로 작동했고, 용존산소는 안전 범위 내에서 유지됐습니다.',
+        ],
+      },
+      {
+        title: '결론 및 기대효과',
+        body: [
+          '셰이드볼의 피복률을 능동적으로 조절해 저수지 환경 변화에 유연하게 대응할 수 있는 가능성을 확인했습니다.',
+          '기대 효과: 증발 물 손실 감소, 수질 관리에 활용, 스마트 저수지 관리 시스템.',
+        ],
+      },
+    ],
+    gallery: [
+      { src: '/images/shade-ball-system/tank.jpg', caption: '수조', aspect: 1.776, row: 0 },
+      { src: '/images/shade-ball-system/balls.jpg', caption: '셰이드볼 연결 구조', aspect: 0.563, row: 0 },
+    ],
+  },
+  {
     slug: 'quoridor-ai',
     title: 'Quoridor AI',
     date: '2026',
@@ -329,12 +416,13 @@ export const projects: Project[] = [
     pdf: '/reports/nash-equilibrium-seat-simulation.pdf',
   },
   {
-    slug: 'slent',
-    title: 'Slent',
-    date: '2024',
-    description: '새롭게 설계한 언어 Slent와 이를 바이트코드로 컴파일하는 Slent Compiler, 그리고 이를 실행하는 Slent VM',
-    tags: ['Slent', 'C', 'C++'],
-    githubUrl: 'https://github.com/airhood/Slent',
+    slug: 'dimo',
+    title: 'Dimo',
+    date: '2025',
+    description: '주식/선물/옵션/대출/예적금/펀드/ETF/부동산/도박/뉴스/거래예약/자동매매/전략백테스팅 등 다양한 기능을 가진 투자 시뮬레이션 디스코드 봇',
+    tags: ['Javascript', 'DiscordJS'],
+    githubUrl: 'https://github.com/airhood/Dimo',
+    image: '/images/projects/dimo.png',
   },
   {
     slug: 'cubic-engine',
@@ -345,13 +433,12 @@ export const projects: Project[] = [
     githubUrl: 'https://github.com/airhood/CubicEngine',
   },
   {
-    slug: 'dimo',
-    title: 'Dimo',
-    date: '2025',
-    description: '주식/선물/옵션/대출/예적금/펀드/ETF/부동산/도박/뉴스/거래예약/자동매매/전략백테스팅 등 다양한 기능을 가진 투자 시뮬레이션 디스코드 봇',
-    tags: ['Javascript', 'DiscordJS'],
-    githubUrl: 'https://github.com/airhood/Dimo',
-    image: '/images/projects/dimo.png',
+    slug: 'slent',
+    title: 'Slent',
+    date: '2024',
+    description: '새롭게 설계한 언어 Slent와 이를 바이트코드로 컴파일하는 Slent Compiler, 그리고 이를 실행하는 Slent VM',
+    tags: ['Slent', 'C', 'C++'],
+    githubUrl: 'https://github.com/airhood/Slent',
   },
   {
     slug: 'wind-turbine-maekyung',
