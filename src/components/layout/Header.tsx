@@ -54,7 +54,7 @@ const Header: React.FC = () => {
       <div className="max-w-content mx-auto px-6 sm:px-10 md:px-16 lg:px-24 flex items-center justify-between h-16">
         <button
           onClick={() => navigate('/')}
-          className="font-display font-extrabold text-lg tracking-tight text-text"
+          className="font-display font-extrabold text-xl tracking-tight text-text"
         >
           Airhood
         </button>

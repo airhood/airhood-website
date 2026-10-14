@@ -1,6 +1,6 @@
 import React from 'react';
 import Section from '../common/Section.tsx';
-import profile_image from '../../assets/images/Airhood_Fixed.png';
+import profile_image from '../../assets/images/profile.png';
 
 const stats = [
   { value: '5년+', label: '프로그래밍 경력' },

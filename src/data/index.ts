@@ -11,7 +11,7 @@ export const socialLinks: SocialLink[] = [
 ];
 
 export const interests: Interest[] = [
-  { name: 'AI' },
+  { name: 'ML' },
   { name: 'Physical AI' },
   { name: 'Robotics' },
   { name: 'Embedded System' },
