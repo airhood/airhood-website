@@ -47,3 +47,12 @@ export interface Goal {
   title: string;
   description: string;
 }
+
+export interface AppInfo {
+  slug: string;
+  name: string;
+  description: string;
+  icon: string;        // public 기준 경로 (정사각형)
+  tags: string[];
+  links: { label: string; url: string }[]; // 'Open' = 서비스 주소, 'Download' = 설치 파일, 'GitHub' = 저장소
+}

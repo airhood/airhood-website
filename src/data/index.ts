@@ -1,6 +1,6 @@
 import { FaGithub, FaDiscord, FaTrophy, FaLink, FaJava, FaRobot, FaCode, FaGamepad, FaAtom } from 'react-icons/fa';
 import { SiTistory, SiCsharp, SiJavascript, SiPython, SiAndroid, SiC, SiCplusplus, SiGo, SiUnity, SiReact, SiDart, SiFlutter, SiPytorch } from 'react-icons/si';
-import { SocialLink, Interest, TechStack, Project, Goal } from '../types';
+import { SocialLink, Interest, TechStack, Project, Goal, AppInfo } from '../types';
 
 export const socialLinks: SocialLink[] = [
   { platform: 'GitHub', url: 'https://github.com/airhood', icon: FaGithub },
@@ -165,11 +165,6 @@ export const projects: Project[] = [
       image: '/images/projects/shade-ball-system-poster.jpg',
       pdf: '/reports/shade-ball-system-poster.pdf',
     },
-    highlights: [
-      { value: '27.17 → 11.88', label: '5일 날씨 시나리오의 누적 증발량 (mm, 무피복 → 24h 예측 제어)' },
-      { value: '89.3% → 66.3%', label: '머더볼을 내려서 연속적으로 조절한 피복률' },
-      { value: 'DO 6 mg/L 이상', label: '모든 비교군에서 유지된 용존산소' },
-    ],
     sections: [
       {
         title: '탐구 동기',
@@ -513,5 +508,39 @@ export const goals: Goal[] = [
     icon: FaAtom,
     title: 'Quantum Computing',
     description: '양자컴퓨팅을 활용한 알고리즘, 양자 머신러닝 등 기술 학습 및 연구',
+  },
+];
+
+export const apps: AppInfo[] = [
+  {
+    slug: 'snip',
+    name: 'Snip',
+    description: '화면 캡처 후 AI에게 바로 물어보는 Android 앱. 화면 가장자리 스와이프로 영역을 캡처해 AI에게 물어볼 수 있습니다',
+    icon: '/images/apps/snip.png',
+    tags: ['Kotlin', 'Android'],
+    links: [
+      { label: 'Download', url: 'https://github.com/airhood/Snip/releases/latest/download/Snip.apk' },
+      { label: 'GitHub', url: 'https://github.com/airhood/Snip' },
+    ],
+  },
+  {
+    slug: 'nobe',
+    name: 'Nobe',
+    description: 'Tiptap 에디터 기반의 블록 문서 앱. 페이지 트리와 슬래시 명령어, Supabase 실시간 연동, 버전 히스토리, AI 글쓰기를 지원하고 Capacitor로 Android 앱도 제공',
+    icon: '/images/apps/nobe.png',
+    tags: ['React', 'Tiptap', 'Supabase'],
+    links: [
+      { label: 'Open', url: 'https://nobe-web.vercel.app' },
+      { label: 'Download', url: 'https://github.com/airhood/Nobe/releases/latest/download/Nobe.apk' },
+      { label: 'GitHub', url: 'https://github.com/airhood/Nobe' },
+    ],
+  },
+  {
+    slug: 'cbgpu',
+    name: 'CBGPU',
+    description: 'CBSH 학생을 위한 올인원 플랫폼. GPU 대여, 자습신청, 시간표, 급식, 투표, 연구노트, 스터디 매칭까지 학교생활에 필요한 기능을 제공',
+    icon: '/images/apps/cbgpu.png',
+    tags: ['Next.js', 'Flutter'],
+    links: [{ label: 'Open', url: 'https://cbgpu.vercel.app' }],
   },
 ];

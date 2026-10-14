@@ -7,6 +7,7 @@ import BuildStrip from './components/layout/BuildStrip.tsx';
 import Home from './pages/Home.tsx';
 import Projects from './pages/Projects.tsx';
 import ProjectDetail from './pages/ProjectDetail.tsx';
+import Apps from './pages/Apps.tsx';
 import { pageTransition } from './lib/motion.ts';
 import './styles/globals.css';
 
@@ -32,6 +33,7 @@ const AnimatedRoutes: React.FC = () => {
           <Route path="/" element={<Home />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/projects/:slug" element={<ProjectDetail />} />
+          <Route path="/apps" element={<Apps />} />
         </Routes>
       </motion.div>
     </AnimatePresence>
